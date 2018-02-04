@@ -9,6 +9,8 @@ Author URI: https://github.com/fs1995
 License: GPL2
 */
 
+defined('ABSPATH') or die('No!');
+
 //check if we are on MWPv2 platform
 $is_lwmwp = 1;
 if (get_current_user()[0] !== 's')

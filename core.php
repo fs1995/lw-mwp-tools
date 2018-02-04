@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No!');
 
 $meminfo = preg_split('/\ +|[\n]/', file_get_contents("/proc/meminfo")); //regex to split spaces and newline
 
