@@ -23,7 +23,7 @@ $ram_used=$ram_total-($meminfo_memfree+$meminfo_buffers+$meminfo_cached);
 $ram_percent=($ram_used/$ram_total)*100;
 $swap_used=$meminfo_swaptotal-$meminfo_swapfree;
 
-function ram_info($ram_total, $ram_used, $ram_avail, $meminfo_free, $meminfo_buffers, $meminfo_cached){
+function lw_mwp_tools_ram_info($ram_total, $ram_used, $ram_avail, $meminfo_free, $meminfo_buffers, $meminfo_cached){
   return "Total: " . $ram_total . " MB<br>Used: " . $ram_used . " MB<br>Available: " . $ram_avail . " MB<br><br>Free: " . $meminfo_free . "MB<br>Buffers: " . $meminfo_buffers . " MB<br>Cached: " . $meminfo_cached . " MB";
 }
 
@@ -34,7 +34,7 @@ if($meminfo_swaptotal == "0"){
   $swap_percent=($swap_used/$meminfo_swaptotal)*100;
 }
 
-function swap_info($swap_total, $swap_used, $swap_free){
+function lw_mwp_tools_swap_info($swap_total, $swap_used, $swap_free){
   return "Total: " . $swap_total . " MB<br>Used: " . $swap_used . " MB<br>Free: " . $swap_free . " MB";
 }
 
@@ -44,12 +44,12 @@ $disk_free  = round(((disk_free_space ('/')/1024)/1024)/1024 ,1);
 $disk_used = $disk_total-$disk_free;
 $disk_percent = round(($disk_used/$disk_total)*100, 1);
 
-function disk_info($disk_total, $disk_used, $disk_free, $disk_percent){
+function lw_mwp_tools_disk_info($disk_total, $disk_used, $disk_free, $disk_percent){
   return "Capacity: " . $disk_total . " GB<br>Used: " . $disk_used . " GB (" . $disk_percent . "%)<br>Free: " . $disk_free . " GB";
 }
 
 ##### CHART #####
-function chart($percent){
+function lw_mwp_tools_chart($percent){
   // create image
   $image = imagecreatetruecolor(150, 150);
 
@@ -82,9 +82,9 @@ if ($meminfo_swaptotal == '0')
 echo "<h2>Server Resource Monitor</h2>This page does not automatically update, you will need to reload it.<br><br>
 <table>
   <tr>
-    <th><img src=\"data:image/png;base64," . chart($ram_percent) . "\"></th>
-    <th><img src=\"data:image/png;base64," . chart($swap_percent) . "\"></th>
-    <th><img src=\"data:image/png;base64," . chart($disk_percent) . "\"></th>
+    <th><img src=\"data:image/png;base64," . lw_mwp_tools_chart($ram_percent) . "\"></th>
+    <th><img src=\"data:image/png;base64," . lw_mwp_tools_chart($swap_percent) . "\"></th>
+    <th><img src=\"data:image/png;base64," . lw_mwp_tools_chart($disk_percent) . "\"></th>
   </tr>
   <tr>
     <td>RAM</td>
@@ -92,9 +92,9 @@ echo "<h2>Server Resource Monitor</h2>This page does not automatically update, y
     <td>Hard Disk</td>
   </tr>
   <tr>
-    <td>";echo ram_info($ram_total, $ram_used, $ram_avail, $meminfo_memfree, $meminfo_buffers, $meminfo_cached);echo "</td>
-    <td>";echo swap_info($meminfo_swaptotal, $swap_used, $meminfo_swapfree);echo "</td>
-    <td>";echo disk_info($disk_total, $disk_used, $disk_free, $disk_percent);echo "<br></td>
+    <td>" . lw_mwp_tools_ram_info($ram_total, $ram_used, $ram_avail, $meminfo_memfree, $meminfo_buffers, $meminfo_cached) . "</td>
+    <td>" . lw_mwp_tools_swap_info($meminfo_swaptotal, $swap_used, $meminfo_swapfree) . "</td>
+    <td>" . lw_mwp_tools_disk_info($disk_total, $disk_used, $disk_free, $disk_percent) . "<br></td>
   </tr>
 </table><br>
 
