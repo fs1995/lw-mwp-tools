@@ -4,7 +4,7 @@ Plugin Name: LW MWP Tools
 Plugin URI: https://github.com/fs1995/lw-mwp-tools/
 Description: Easy access to system logs and resource usage on the Liquid Web Managed WordPress Hosting Platform.
 Author: Francis Smith
-Version: 0.1
+Version: 0.2
 Author URI: https://github.com/fs1995
 License: GPL2
 */
@@ -48,4 +48,3 @@ function lw_mwp_tools_nginx_error(){
   $lw_mwp_tools_log = file_get_contents('/var/log/nginx/' . get_current_user() . '.error.log') or exit("Unable to access NGINX error log. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.");
   echo "<h2>NGINX Error Log viewer</h2>This page does not automatically update, you will need to refresh it.<pre>" . $lw_mwp_tools_log . "</pre>";
 }
-

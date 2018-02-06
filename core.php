@@ -1,6 +1,8 @@
 <?php
 defined('ABSPATH') or die('No!');
 
+$loadavg = sys_getloadavg();
+preg_match_all('/^processor/m', file_get_contents('/proc/cpuinfo'), $cores);
 $meminfo = preg_split('/\ +|[\n]/', file_get_contents("/proc/meminfo")); //regex to split spaces and newline
 
 for($i=0; $i<count($meminfo); $i++){
@@ -80,6 +82,8 @@ if ($meminfo_swaptotal == '0')
   echo "<h2><pre><mark>Issue detected: Contact support to add swap file.</mark></pre></h2>";
 
 echo "<h2>Server Resource Monitor</h2>This page does not automatically update, you will need to reload it.<br><br>
+Load average: " . number_format($loadavg[0], 2) . " " . number_format($loadavg[1], 2) . " " . number_format($loadavg[2], 2) . "<br>
+Cores: " . count($cores[0]) . "<br><br>
 <table>
   <tr>
     <th><img src=\"data:image/png;base64," . lw_mwp_tools_chart($ram_percent) . "\"></th>
