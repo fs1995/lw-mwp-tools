@@ -4,7 +4,7 @@ Plugin Name: LW MWP Tools
 Plugin URI: https://github.com/fs1995/lw-mwp-tools/
 Description: Easy access to system logs and resource usage on the Liquid Web Managed WordPress Hosting Platform.
 Author: Francis Smith
-Version: 0.2
+Version: 0.2.1
 Author URI: https://github.com/fs1995
 License: GPL2
 */
