@@ -3,7 +3,7 @@ Contributors: fs1995
 Donate link: https://paypal.me/fs1995
 Tags: liquidweb, liquid web, server info
 Requires at least: 3.0.1
-Tested up to: 4.9.3
+Tested up to: 4.9.4
 Requires PHP: 5.1.3
 Stable tag: 0.2
 License: GPLv2 or later
@@ -13,7 +13,7 @@ Easy access to system logs and resource usage on the Liquid Web Managed WordPres
 
 == Description ==
 
-This plugin allows easy access to your PHP error log, nginx logs, and to view system resources without having to contact support.
+This plugin allows easy access to your PHP error log, nginx logs, and to view system resources on the Liquid Web Managed WordPress Hosting Platform without having to contact support.
 
 This is an unofficial plugin and is not affiliated with Liquid Web.
 
