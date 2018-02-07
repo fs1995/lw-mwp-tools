@@ -23,15 +23,15 @@ if(!$is_lwmwp)
 add_action('admin_menu', 'lw_mwp_tools_menu'); //hook into WP menu
 
 function lw_mwp_tools_menu(){ //create the plugins menu
-  add_menu_page('LW MWP Tools', 'LW MWP Tools', 'manage_options', 'lw-mwp-tools',  'lw_mwp_tools_init');
-  add_submenu_page ('lw-mwp-tools', 'Server Resource Monitor', 'Resource Monitor', 'manage_options', 'lw-mwp-tools', 'lw_mwp_tools_init');
+  add_menu_page('LW MWP Tools', 'LW MWP Tools', 'manage_options', 'lw-mwp-tools',  'lw_mwp_tools_monitor');
+  add_submenu_page ('lw-mwp-tools', 'Server Resource Monitor', 'Resource Monitor', 'manage_options', 'lw-mwp-tools', 'lw_mwp_tools_monitor');
   add_submenu_page ('lw-mwp-tools', 'PHP error log', 'PHP error log', 'manage_options', 'lw-mwp-tools-php', 'lw_mwp_tools_php');
   add_submenu_page ('lw-mwp-tools', 'NGINX access log', 'NGINX access log', 'manage_options', 'lw-mwp-tools-nginx-access', 'lw_mwp_tools_nginx_access');
   add_submenu_page ('lw-mwp-tools', 'NGINX error log', 'NGINX error log', 'manage_options', 'lw-mwp-tools-nginx-error', 'lw_mwp_tools_nginx_error');
 }
 
-function lw_mwp_tools_init(){ //generate the system monitor page
-  require 'core.php'; //in a separate file cause theres a bit to this page.
+function lw_mwp_tools_monitor(){ //generate the resource monitor page
+  require 'monitor.php'; //in a separate file cause theres a bit to this page.
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
