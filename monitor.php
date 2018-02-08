@@ -54,12 +54,11 @@ function lw_mwp_tools_disk_info($disk_total, $disk_used, $disk_free, $disk_perce
 
 ##### CHART GENERATOR #####
 function lw_mwp_tools_chart($percent){ //all we need is the percent to make each of the charts
-
   $image = imagecreatetruecolor(150, 150); //create image
 
-  $clear    = imagecolorallocatealpha($image, 0, 0, 0, 127); //allocate colors
-  $red      = imagecolorallocate($image, 0xFF, 0x00, 0x00);
-  $green    = imagecolorallocate($image, 0, 255, 0);
+  $clear = imagecolorallocatealpha($image, 0, 0, 0, 127); //allocate colors
+  $red   = imagecolorallocate($image, 230,0,0);
+  $green = imagecolorallocate($image, 0, 220, 0);
 
   imagefill($image, 0, 0, $clear); //make background transparent
   imagesavealpha($image, TRUE);
