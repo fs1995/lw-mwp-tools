@@ -1,112 +1,129 @@
-<?php
-defined('ABSPATH') or die('No!');
+<?php defined('ABSPATH') or die('No!');
+$jsonpath = plugins_url( 'monitor_json.php', __FILE__ );?>
 
-$loadavg = sys_getloadavg(); //array of the load averages
-preg_match_all('/^processor/m', file_get_contents('/proc/cpuinfo'), $cores); //to get the number of cpu cores
-$meminfo = preg_split('/\ +|[\n]/', file_get_contents("/proc/meminfo")); //get ram and swap info, some regex to split spaces and newline to store in an array
+<h2>Server Resource Monitor</h2>
 
-for($i=0; $i<count($meminfo); $i++){ //get ram and swap info from the above array, and convert it from kb to mb, with no decimal places:
-  if($meminfo[$i] === "MemTotal:")
-    $ram_total=round(($meminfo[$i+1])/1024, 0);
-  if($meminfo[$i] === "MemFree:")
-    $meminfo_memfree=round(($meminfo[$i+1])/1024, 0);
-  if($meminfo[$i] === "Buffers:")
-    $meminfo_buffers=round(($meminfo[$i+1])/1024, 0);
-  if($meminfo[$i] === "Cached:")
-    $meminfo_cached=round(($meminfo[$i+1])/1024, 0);
-  if($meminfo[$i] === "SwapTotal:")
-    $meminfo_swaptotal=round(($meminfo[$i+1])/1024, 0);
-  if($meminfo[$i] === "SwapFree:")
-    $meminfo_swapfree=round(($meminfo[$i+1])/1024, 0);
-}
+Load average: <span id="load_1"></span> <span id="load_5"></span> <span id="load_15"></span><br>
+Cores: <span id="cores"></span><br><br>
 
-$ram_avail = $meminfo_memfree+$meminfo_buffers+$meminfo_cached; //seems the older format of the meminfo file on ubuntu 14 does not have a "MemAvailable:" value, so will add free + buffers + cached
-$ram_used=$ram_total-($meminfo_memfree+$meminfo_buffers+$meminfo_cached); //so how much ram is actually used would be the total minus free, buffers, and cached.
-$ram_percent=($ram_used/$ram_total)*100; //used ram as a percent, this will also be used for the chart
-$swap_used=$meminfo_swaptotal-$meminfo_swapfree; //how much swap is used is simpler to caclulate.
-
-//this function will output the ram info when called below
-function lw_mwp_tools_ram_info($ram_total, $ram_used, $ram_avail, $meminfo_free, $meminfo_buffers, $meminfo_cached){
-  return "Total: " . $ram_total . " MB<br>Used: " . $ram_used . " MB<br>Available: " . $ram_avail . " MB<br><br>Free: " . $meminfo_free . "MB<br>Buffers: " . $meminfo_buffers . " MB<br>Cached: " . $meminfo_cached . " MB";
-}
-
-//check if theres no swap, because in that case swap chart should show as full (100), and not empty (0):
-if($meminfo_swaptotal == "0"){
-  $swap_percent='100';
-}else{
-  $swap_percent=($swap_used/$meminfo_swaptotal)*100;
-}
-
-function lw_mwp_tools_swap_info($swap_total, $swap_used, $swap_free){
-  return "Total: " . $swap_total . " MB<br>Used: " . $swap_used . " MB<br>Free: " . $swap_free . " MB";
-}
-
-##### DISK #####
-$disk_total = round(((disk_total_space('/')/1024)/1024)/1024 ,1); //convert bytes to GB with 1 decimal place.
-$disk_free  = round(((disk_free_space ('/')/1024)/1024)/1024 ,1);
-$disk_used = $disk_total-$disk_free;
-$disk_percent = round(($disk_used/$disk_total)*100, 1); //disk used as a percent, this will also be used for the chart.
-
-//output the disk info when called below:
-function lw_mwp_tools_disk_info($disk_total, $disk_used, $disk_free, $disk_percent){
-  return "Capacity: " . $disk_total . " GB<br>Used: " . $disk_used . " GB (" . $disk_percent . "%)<br>Free: " . $disk_free . " GB";
-}
-
-##### CHART GENERATOR #####
-function lw_mwp_tools_chart($percent){ //all we need is the percent to make each of the charts
-  $image = imagecreatetruecolor(150, 150); //create image
-
-  $clear = imagecolorallocatealpha($image, 0, 0, 0, 127); //allocate colors
-  $red   = imagecolorallocate($image, 230,0,0);
-  $green = imagecolorallocate($image, 0, 220, 0);
-
-  imagefill($image, 0, 0, $clear); //make background transparent
-  imagesavealpha($image, TRUE);
-
-  imagefilledarc($image, 75, 75, 150, 150, 0, 360, $red, IMG_ARC_PIE); //red background
-  if($percent < '100'){//for proper handling of full (100), otherwise chart would show as empty. and if its over 100, somethings broken.
-    imagefilledarc($image, 75, 75, 150, 150, ($percent/100)*360/*convert percent to degrees*/, 360 , $green, IMG_ARC_PIE); //draw green arc to the percent passed over the red circle
-  }
-
-  //capture the gd output and return the chart as base64 image
-  ob_start ();
-    imagepng($image);
-    $image_data = ob_get_contents();
-  ob_end_clean ();
-  return base64_encode($image_data);
-}
-##### END CHART GENERATOR #####
-
-##### NOW MAKE THE PAGE #####
-echo "<style>table, th, td {border: 1px solid black;text-align:center;}</style>";
-
-if ($meminfo_swaptotal == '0') //if there is no swap, let customer know to have us add it.
-  echo "<h2><pre><mark>Issue detected: Contact support to add swap file.</mark></pre></h2>";
-
-echo "<h2>Server Resource Monitor</h2>This page does not automatically update, you will need to reload it.<br><br>
-Load average: " . number_format($loadavg[0], 2) . " " . number_format($loadavg[1], 2) . " " . number_format($loadavg[2], 2) . "<br>"; //show each of the load averages with 2 decimal places
-echo "Cores: " . count($cores[0]) . "<br><br>
-<table>
+<table border="1" style="text-align:center">
   <tr>
-    <th><img src=\"data:image/png;base64," . lw_mwp_tools_chart($ram_percent) . "\"></th>
-    <th><img src=\"data:image/png;base64," . lw_mwp_tools_chart($swap_percent) . "\"></th>
-    <th><img src=\"data:image/png;base64," . lw_mwp_tools_chart($disk_percent) . "\"></th>
+    <td><div class="ct-chart ct-square" id="chart_ram" style="height:150px;width:150px;"></div></td>
+    <td><div class="ct-chart ct-square" id="chart_swap" style="height:150px;width:150px;"></div></td>
+    <td><div class="ct-chart ct-square" id="chart_disk" style="height:150px;width:150px;"></div></td>
   </tr>
   <tr>
-    <td>RAM</td>
-    <td>Swap</td>
-    <td>Hard Disk</td>
+    <td>RAM (<span id="ram_pct"></span> %)</td>
+    <td>Swap (<span id="swap_pct"></span> %)</td>
+    <td>Hard Disk (<span id="disk_pct"></span> %)</td>
   </tr>
   <tr>
-    <td>" . lw_mwp_tools_ram_info($ram_total, $ram_used, $ram_avail, $meminfo_memfree, $meminfo_buffers, $meminfo_cached) . "</td>
-    <td>" . lw_mwp_tools_swap_info($meminfo_swaptotal, $swap_used, $meminfo_swapfree) . "</td>
-    <td>" . lw_mwp_tools_disk_info($disk_total, $disk_used, $disk_free, $disk_percent) . "<br></td>
+    <td>Total: <span id="ram_total"></span> MB<br>
+      Used: <span id="ram_used"></span> MB<br>
+      Available: <span id="ram_avail"></span> MB<br><br>
+      Free: <span id="ram_free"></span> MB<br>
+      Buffers: <span id="ram_buffers"></span> MB<br>
+      Cached: <span id="ram_cached"></span> MB</td>
+    <td>Total: <span id="swap_total"></span> MB<br>
+      Used: <span id="swap_used"></span> MB<br>
+      Free: <span id="swap_free"></span> MB</td>
+    <td>Total: <span id="disk_total"></span> GB<br>
+      Used: <span id="disk_used"></span> GB<br>
+      Free: <span id="disk_free"></span> GB</td>
   </tr>
 </table><br>
 
+Hostname: <span id="hostname"></span><br>
+PHP: <span id="phpversion"></span><br><br>
+
 <h2>Bug report or suggestion?</h2>
-Let us know <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.
+Let us know <a href="https://wordpress.org/support/plugin/lw-mwp-tools" target="_blank">here</a>.
 
-<br>";
 
-?>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"> <!-- for the pie charts -->
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<style>/*set the pie chart colors*/
+.ct-series-a .ct-slice-pie {
+  fill: red;
+  stroke: white;
+}
+.ct-series-b .ct-slice-pie {
+  fill: green;
+  stroke: white;
+}
+</style>
+
+<script type="text/javascript">
+
+function updateChart(){
+  var xhr = new XMLHttpRequest(); //ie7+
+  xhr.open("GET", <?php echo "\"" . $jsonpath . "\""; ?>, true, "", <?php echo "\"" . gethostname() . get_current_user() . "\""; ?>); //little bit of mixing php here to get the path of monitor_json.php to get the json with all the system resource info
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4){
+      if(xhr.status === 200){ //response is ready
+        var myjson = JSON.parse(xhr.responseText); //turning that json into an array
+        document.getElementById("ram_total").innerHTML = myjson['ram_total']; //and updating the page
+        document.getElementById("ram_used").innerHTML = myjson['ram_used'];
+        document.getElementById("ram_avail").innerHTML = myjson['ram_avail'];
+        document.getElementById("ram_free").innerHTML = myjson['ram_free'];
+        document.getElementById("ram_buffers").innerHTML = myjson['ram_buffers'];
+        document.getElementById("ram_cached").innerHTML = myjson['ram_cached'];
+        document.getElementById("ram_pct").innerHTML = myjson['ram_pct'];
+
+        document.getElementById("swap_total").innerHTML = myjson['swap_total'];
+        document.getElementById("swap_used").innerHTML = myjson['swap_used'];
+        document.getElementById("swap_free").innerHTML = myjson['swap_free'];
+        document.getElementById("swap_pct").innerHTML = myjson['swap_pct'];
+
+        document.getElementById("disk_total").innerHTML = myjson['disk_total'];
+        document.getElementById("disk_used").innerHTML = myjson['disk_used'];
+        document.getElementById("disk_free").innerHTML = myjson['disk_free'];
+        document.getElementById("disk_pct").innerHTML = myjson['disk_pct'];
+
+        document.getElementById("load_1").innerHTML = myjson['load_1'];
+        document.getElementById("load_5").innerHTML = myjson['load_5'];
+        document.getElementById("load_15").innerHTML = myjson['load_15'];
+        document.getElementById("cores").innerHTML = myjson['cores'];
+        document.getElementById("hostname").innerHTML = myjson['hostname'];
+        document.getElementById("phpversion").innerHTML = myjson['phpversion'];
+
+        chart_ram.update({ series: [myjson['ram_used'], myjson['ram_avail']], labels: [" ", " "] }); //and updating the charts
+        chart_swap.update({ series: [myjson['swap_used'], myjson['swap_free']], labels: [" ", " "] });
+        chart_disk.update({ series: [myjson['disk_used'], myjson['disk_free']], labels: [" ", " "] });
+      }else{
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function(e){
+    console.error(xhr.statusText);
+  };
+  xhr.timeout = 600; //600ms should work on most connections
+  xhr.send(null);
+};
+
+setTimeout(updateChart, 0); //let other stuff finish loading before showing initial data
+setInterval(updateChart, 2000); //then refresh data every 2 seconds (this will use about 2MB bandwidth per hour)
+
+chart_ram = new Chartist.Pie('#chart_ram', { //create the ram chart
+  series: [0],
+}, {
+  width:150,
+  height: 150
+});
+
+chart_swap = new Chartist.Pie('#chart_swap', {
+  series: [0],
+}, {
+  width:150,
+  height:150
+});
+
+chart_disk = new Chartist.Pie('#chart_disk', {
+  series: [0],
+}, {
+  width:150,
+  height:150
+});
+
+</script>

@@ -40,6 +40,11 @@ Let us know in the plugins support forum.
 
 == Changelog ==
 
+= 0.3 =
+* Rewrite of the system monitor page, resource usage is now updated automatically.
+* Better looking charts, thanks to Chartist.js.
+* View PHP version and hostname.
+
 = 0.2 =
 * View system load.
 
@@ -48,5 +53,5 @@ Let us know in the plugins support forum.
 
 == Upgrade Notice ==
 
-= 0.2 =
-* Can now view system load.
+= 0.3 =
+* Resource Monitor now updates automatically!
