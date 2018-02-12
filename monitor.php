@@ -57,7 +57,7 @@ Let us know <a href="https://wordpress.org/support/plugin/lw-mwp-tools" target="
 
 function updateChart(){
   var xhr = new XMLHttpRequest(); //ie7+
-  xhr.open("GET", <?php echo "\"" . $jsonpath . "\""; ?>, true,  ); //little bit of mixing php here to get the path of monitor_json.php to get the json with all the system resource info
+  xhr.open("GET", <?php echo "\"" . $jsonpath . "\""; ?>, true); //little bit of mixing php here to get the path of monitor_json.php to get the json with all the system resource info
   xhr.onload = function (e) {
     if (xhr.readyState === 4){
       if(xhr.status === 200){ //response is ready
