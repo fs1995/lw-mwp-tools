@@ -1,16 +1,11 @@
 <?php
-$json_password = gethostname() . get_current_user(); //not super secure, but this isint terribly sensitive info we are protecting...
 
-if (!isset($_SERVER['PHP_AUTH_PW'])) { //no password provided, need to authenticate
-    header('WWW-Authenticate: Basic realm="lw-mwp-tools"'); //the http authentication form. page will reload on submit.
-    header('HTTP/1.0 401 Unauthorized'); //user clicked cancel or somehow didnt get password
-    echo 'didnt authenticate';
+if (!isset( $_GET['lw-mwp-tools'] )) { //to protect access to this file
+    header('HTTP/1.0 401 Unauthorized');
     exit;
-} else {
-    if($_SERVER['PHP_AUTH_PW'] !== $json_password){ //got password but its not right
-      echo "invalid";
-      exit;
-    }
+}else if( $_GET['lw-mwp-tools'] !== gethostname() . get_current_user() ){ //so the GET parameter is set, now to check what it's set to... not super secure, but this isint terribly sensitive info we are protecting...
+  header('HTTP/1.0 401 Unauthorized');
+  exit;
 }
 
 header('Cache-Control: no-cache'); //TODO: test this with varnish.

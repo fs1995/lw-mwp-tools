@@ -40,6 +40,9 @@ Let us know in the plugins support forum.
 
 == Changelog ==
 
+= 0.3.1 =
+* Bug fix on Resource Monitor page.
+
 = 0.3 =
 * Rewrite of the system monitor page, resource usage is now updated automatically.
 * Better looking charts, thanks to Chartist.js.
@@ -53,5 +56,5 @@ Let us know in the plugins support forum.
 
 == Upgrade Notice ==
 
-= 0.3 =
-* Resource Monitor now updates automatically!
+= 0.3.1 =
+* Bug causing a password popup on Resource Monitor page is fixed.
