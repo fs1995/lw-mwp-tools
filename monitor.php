@@ -1,5 +1,5 @@
 <?php defined('ABSPATH') or die('No!');
-$jsonpath = plugins_url( 'monitor_json.php', __FILE__ ) . "?lw-mwp-tools=" . gethostname() . get_current_user();?>
+$jsonpath = plugins_url( 'api.php', __FILE__ ) . "?lw-mwp-tools=" . gethostname() . get_current_user() . "&page=monitor";?>
 
 <h2>Server Resource Monitor</h2>
 
@@ -33,9 +33,6 @@ Cores: <span id="cores"></span><br><br>
   </tr>
 </table><br>
 
-Hostname: <span id="hostname"></span><br>
-PHP: <span id="phpversion"></span><br><br>
-
 <h2>Bug report or suggestion?</h2>
 Let us know <a href="https://wordpress.org/support/plugin/lw-mwp-tools" target="_blank">here</a>.
 
@@ -68,24 +65,22 @@ function updateChart(){
         document.getElementById("ram_free").innerHTML = myjson['ram_free'];
         document.getElementById("ram_buffers").innerHTML = myjson['ram_buffers'];
         document.getElementById("ram_cached").innerHTML = myjson['ram_cached'];
-        document.getElementById("ram_pct").innerHTML = myjson['ram_pct'];
+        document.getElementById("ram_pct").innerHTML = ((myjson['ram_used'] / myjson['ram_total']) * 100).toFixed(1);
 
         document.getElementById("swap_total").innerHTML = myjson['swap_total'];
         document.getElementById("swap_used").innerHTML = myjson['swap_used'];
         document.getElementById("swap_free").innerHTML = myjson['swap_free'];
-        document.getElementById("swap_pct").innerHTML = myjson['swap_pct'];
+        document.getElementById("swap_pct").innerHTML = ((myjson['swap_used'] / myjson['swap_total']) * 100).toFixed(1);
 
         document.getElementById("disk_total").innerHTML = myjson['disk_total'];
         document.getElementById("disk_used").innerHTML = myjson['disk_used'];
         document.getElementById("disk_free").innerHTML = myjson['disk_free'];
-        document.getElementById("disk_pct").innerHTML = myjson['disk_pct'];
+        document.getElementById("disk_pct").innerHTML = ((myjson['disk_used'] / myjson['disk_total']) *100).toFixed(1);
 
         document.getElementById("load_1").innerHTML = myjson['load_1'];
         document.getElementById("load_5").innerHTML = myjson['load_5'];
         document.getElementById("load_15").innerHTML = myjson['load_15'];
         document.getElementById("cores").innerHTML = myjson['cores'];
-        document.getElementById("hostname").innerHTML = myjson['hostname'];
-        document.getElementById("phpversion").innerHTML = myjson['phpversion'];
 
         chart_ram.update({ series: [myjson['ram_used'], myjson['ram_avail']], labels: [" ", " "] }); //and updating the charts
         chart_swap.update({ series: [myjson['swap_used'], myjson['swap_free']], labels: [" ", " "] });
