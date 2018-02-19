@@ -40,6 +40,9 @@ Let us know in the plugins support forum.
 
 == Changelog ==
 
+= 0.3.2 =
+* Separation of main page into 2 pages: Resource Monitor and System Info. More will be coming to both these pages soon!
+
 = 0.3.1 =
 * Bug fix on Resource Monitor page.
 
@@ -53,8 +56,3 @@ Let us know in the plugins support forum.
 
 = 0.1 =
 * First release!
-
-== Upgrade Notice ==
-
-= 0.3.1 =
-* Bug causing a password popup on Resource Monitor page is fixed.
