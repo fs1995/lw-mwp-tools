@@ -20,10 +20,10 @@ Cores: <span id="cores"></span><br><br>
   <tr>
     <td>Total: <span id="ram_total"></span> MB<br>
       Used: <span id="ram_used"></span> MB<br>
-      Available: <span id="ram_avail"></span> MB<br><br>
+      Available: <span id="ram_avail"></span> MB<!--<br><br>
       Free: <span id="ram_free"></span> MB<br>
       Buffers: <span id="ram_buffers"></span> MB<br>
-      Cached: <span id="ram_cached"></span> MB</td>
+      Cached: <span id="ram_cached"></span> MB--></td>
     <td>Total: <span id="swap_total"></span> MB<br>
       Used: <span id="swap_used"></span> MB<br>
       Free: <span id="swap_free"></span> MB</td>
@@ -62,9 +62,9 @@ function updateChart(){
         document.getElementById("ram_total").innerHTML = myjson['ram_total']; //and updating the page
         document.getElementById("ram_used").innerHTML = myjson['ram_used'];
         document.getElementById("ram_avail").innerHTML = myjson['ram_avail'];
-        document.getElementById("ram_free").innerHTML = myjson['ram_free'];
-        document.getElementById("ram_buffers").innerHTML = myjson['ram_buffers'];
-        document.getElementById("ram_cached").innerHTML = myjson['ram_cached'];
+        //document.getElementById("ram_free").innerHTML = myjson['ram_free'];
+        //document.getElementById("ram_buffers").innerHTML = myjson['ram_buffers'];
+        //document.getElementById("ram_cached").innerHTML = myjson['ram_cached'];
         document.getElementById("ram_pct").innerHTML = ((myjson['ram_used'] / myjson['ram_total']) * 100).toFixed(1);
 
         document.getElementById("swap_total").innerHTML = myjson['swap_total'];

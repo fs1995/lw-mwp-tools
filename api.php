@@ -61,7 +61,7 @@ function resource_monitor(){
   $disk_used = round($disk_total-$disk_free, 1);
   ######################
 
-  ##### CPU INFO #####
+  ##### CPU INFO (Coming soon!) #####
   /*$proc_stat = file('/proc/stat'); //read file into array, split by lines
   $proc_stat_cpu = preg_split('/\ +/', $proc_stat[0]); //read 1st line of file, and split into array by spaces
   $proc_stat_cpu['total'] = $proc_stat_cpu[1]+$proc_stat_cpu[2]+$proc_stat_cpu[3]+$proc_stat_cpu[4]+$proc_stat_cpu[5]+$proc_stat_cpu[6]+$proc_stat_cpu[7]; //100% of the cpu time
@@ -87,7 +87,7 @@ function resource_monitor(){
   //$returned = array('proc_stat_cpu_user' => $proc_stat_cpu[1]/*normal processes executing in user mode*/, 'proc_stat_cpu_nice' => $proc_stat_cpu[2]/*niced processes executing in user mode*/, 'proc_stat_cpu_system' => $proc_stat_cpu[3]/*processes executing in kernel mode*/, 'proc_stat_cpu_idle' => $proc_stat_cpu[4]/*twiddling thumbs*/, 'proc_stat_cpu_iowait' => $proc_stat_cpu[5]/*waiting for I/O to complete*/, 'proc_stat_cpu_irq' => $proc_stat_cpu[6]/*servicing interrupts*/, 'proc_stat_cpu_softirq' => $proc_stat_cpu[7]/*servicing softirqs*/, 'proc_stat_cpu_total' => $proc_stat_cpu['total'], 'proc_stat_intr' => $proc_stat['intr'], 'proc_stat_ctxt' => $proc_stat['ctxt'], 'proc_stat_btime' => $proc_stat['btime'], 'proc_stat_processes' => $proc_stat['processes'], 'proc_stat_procs_running' => $proc_stat['procs_running'], 'proc_stat_procs_blocked' => $proc_stat['procs_blocked'] );
   ####################
 
-  $monitor = array('ram_total' => $ram_total, 'ram_used' => $ram_used, 'ram_avail' => $ram_avail, 'ram_free' => $meminfo_memfree, 'ram_buffers' => $meminfo_buffers, 'ram_cached' => $meminfo_cached, 'swap_total' => $meminfo_swaptotal, 'swap_used' => $swap_used, 'swap_free' => $meminfo_swapfree, 'disk_total' => $disk_total, 'disk_used' => $disk_used, 'disk_free' => $disk_free, 'load_1' => $load_1, 'load_5' => $load_5, 'load_15' => $load_15, 'cores' => $cores );
+  $monitor = array('ram_total' => $ram_total, 'ram_used' => $ram_used, 'ram_avail' => $ram_avail, /*'ram_free' => $meminfo_memfree, 'ram_buffers' => $meminfo_buffers, 'ram_cached' => $meminfo_cached,*/ 'swap_total' => $meminfo_swaptotal, 'swap_used' => $swap_used, 'swap_free' => $meminfo_swapfree, 'disk_total' => $disk_total, 'disk_used' => $disk_used, 'disk_free' => $disk_free, 'load_1' => $load_1, 'load_5' => $load_5, 'load_15' => $load_15, 'cores' => $cores );
 
   echo json_encode($monitor); //the output, to be processed by monitor.php
 }
