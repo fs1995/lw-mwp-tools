@@ -34,10 +34,10 @@ Cores: <span id="cores"></span><br><br>
   </tr>
 </table><br><br>
 
-<form method="post" action="options.php">
+<form method="post" action="options.php"> <!--the update interval setting, with a default of 2 seconds-->
   <?php settings_fields('lwmwptools-settings-group'); ?>
   <?php do_settings_sections('lwmwptools-settings-group'); ?>
-  Update interval: <input type="text" name="lwmwptools_update_interval" value="<?php echo esc_attr(get_option('lwmwptools_update_interval', "2") ); ?>" maxlength="4" size="4" />
+  Update interval: <input type="text" name="lwmwptools_update_interval" id="update_interval" value="<?php echo esc_attr(get_option('lwmwptools_update_interval', "2") ); ?>" maxlength="4" size="4" />
   <?php submit_button("Set", '', '', false); ?>
 </form>
 
@@ -106,8 +106,15 @@ function updateChart(){
   xhr.send(null);
 };
 
+if(document.getElementById('update_interval').value < 1){ //make sure the interval is not 0 or negative
+  var update_interval = 2;
+  document.getElementById('update_interval').value = "2";
+}else{
+  var update_interval = document.getElementById('update_interval').value;
+}
+
 setTimeout(updateChart, 0); //let other stuff finish loading before showing initial data
-setInterval(updateChart, 2000); //then refresh data every 2 seconds (this will use about 2MB bandwidth per hour)
+setInterval(updateChart, update_interval*1000); //then refresh data every update_interval seconds (default of 2 seconds will use about 2MB bandwidth per hour)
 
 chart_ram = new Chartist.Pie('#chart_ram', { //create the ram chart
   series: [0],
