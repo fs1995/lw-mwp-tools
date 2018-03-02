@@ -1,7 +1,8 @@
 <?php defined('ABSPATH') or die('No!');
 $jsonpath = plugins_url( 'api.php', __FILE__ ) . "?lw-mwp-tools=" . gethostname() . get_current_user() . "&page=monitor";?>
 
-<h2>Server Resource Monitor</h2>
+<div class="wrap">
+<h1>Server Resource Monitor</h1>
 
 Load average: <span id="load_1"></span> <span id="load_5"></span> <span id="load_15"></span><br>
 Cores: <span id="cores"></span><br><br>
@@ -31,10 +32,18 @@ Cores: <span id="cores"></span><br><br>
       Used: <span id="disk_used"></span> GB<br>
       Free: <span id="disk_free"></span> GB</td>
   </tr>
-</table><br>
+</table><br><br>
 
-<h2>Bug report or suggestion?</h2>
+<form method="post" action="options.php">
+  <?php settings_fields('lwmwptools-settings-group'); ?>
+  <?php do_settings_sections('lwmwptools-settings-group'); ?>
+  Update interval: <input type="text" name="lwmwptools_update_interval" value="<?php echo esc_attr(get_option('lwmwptools_update_interval', "2") ); ?>" maxlength="4" size="4" />
+  <?php submit_button("Set", '', '', false); ?>
+</form>
+
+<br><h2>Bug report or suggestion?</h2>
 Let us know <a href="https://wordpress.org/support/plugin/lw-mwp-tools" target="_blank">here</a>.
+</div>
 
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"> <!-- for the pie charts -->

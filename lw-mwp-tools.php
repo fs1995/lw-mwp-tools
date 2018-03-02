@@ -29,6 +29,8 @@ function lw_mwp_tools_menu(){ //create the plugins menu
   add_submenu_page ('lw-mwp-tools', 'PHP error log', 'PHP error log', 'manage_options', 'lw-mwp-tools-php', 'lw_mwp_tools_php');
   add_submenu_page ('lw-mwp-tools', 'NGINX access log', 'NGINX access log', 'manage_options', 'lw-mwp-tools-nginx-access', 'lw_mwp_tools_nginx_access');
   add_submenu_page ('lw-mwp-tools', 'NGINX error log', 'NGINX error log', 'manage_options', 'lw-mwp-tools-nginx-error', 'lw_mwp_tools_nginx_error');
+
+  add_action('admin_init', 'register_lwmwptools_settings');
 }
 
 function lw_mwp_tools_monitor(){ //generate the resource monitor page
@@ -36,20 +38,24 @@ function lw_mwp_tools_monitor(){ //generate the resource monitor page
 }
 
 function lw_mwp_tools_info(){ //generate the resource monitor page
-  echo "<h2>System Information</h2>Hostname: " . gethostname() . "<br>PHP version: " . phpversion() . "<br>Platform: " . PHP_OS;
+  echo "<h1>System Information</h1>Hostname: " . gethostname() . "<br>PHP version: " . phpversion() . "<br>Platform: " . PHP_OS;
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
   $lw_mwp_tools_log = file_get_contents('/var/log/' . get_current_user() . '-php-fpm-errors.log') or exit("Unable to access PHP error log. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>."); //try to get the php error log
-  echo "<h2>PHP Error Log viewer</h2>This page does not automatically update, you will need to refresh it. If you are troubleshooting WordPress code, have you turned on <a href=\"https://codex.wordpress.org/Debugging_in_WordPress\" target=\"_blank\">WP_DEBUG</a> in wp-config.php?<pre>" . $lw_mwp_tools_log . "</pre>";
+  echo "<h1>PHP Error Log viewer</h1>This page does not automatically update, you will need to refresh it. If you are troubleshooting WordPress code, have you turned on <a href=\"https://codex.wordpress.org/Debugging_in_WordPress\" target=\"_blank\">WP_DEBUG</a> in wp-config.php?<pre>" . $lw_mwp_tools_log . "</pre>";
 }
 
 function lw_mwp_tools_nginx_access(){ //generate the nginx access log page
   $lw_mwp_tools_log = file_get_contents('/var/log/nginx/' . get_current_user() . '.access.log') or exit("Unable to access NGINX access log. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.");
-  echo "<h2>NGINX access Log viewer</h2>This page does not automatically update, you will need to refresh it.<pre>" . $lw_mwp_tools_log . "</pre>";
+  echo "<h1>NGINX access Log viewer</h1>This page does not automatically update, you will need to refresh it.<pre>" . $lw_mwp_tools_log . "</pre>";
 }
 
 function lw_mwp_tools_nginx_error(){ //generate the nginx error log page
   $lw_mwp_tools_log = file_get_contents('/var/log/nginx/' . get_current_user() . '.error.log') or exit("Unable to access NGINX error log. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.");
   echo "<h2>NGINX Error Log viewer</h2>This page does not automatically update, you will need to refresh it.<pre>" . $lw_mwp_tools_log . "</pre>";
+}
+
+function register_lwmwptools_settings(){ //register the plugins settings
+  register_setting('lwmwptools-settings-group', 'lwmwptools_update_interval');
 }
