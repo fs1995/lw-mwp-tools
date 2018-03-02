@@ -37,7 +37,7 @@ Cores: <span id="cores"></span><br><br>
 <form method="post" action="options.php"> <!--the update interval setting, with a default of 2 seconds-->
   <?php settings_fields('lwmwptools-settings-group'); ?>
   <?php do_settings_sections('lwmwptools-settings-group'); ?>
-  Update interval: <input type="text" name="lwmwptools_update_interval" id="update_interval" value="<?php echo esc_attr(get_option('lwmwptools_update_interval', "2") ); ?>" maxlength="4" size="4" />
+  Update interval (seconds): <input type="text" name="lwmwptools_update_interval" id="update_interval" value="<?php echo esc_attr(get_option('lwmwptools_update_interval', "2") ); ?>" maxlength="4" size="4" />
   <?php submit_button("Set", '', '', false); ?>
 </form>
 
