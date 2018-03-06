@@ -57,5 +57,5 @@ function lw_mwp_tools_nginx_error(){ //generate the nginx error log page
 }
 
 function register_lwmwptools_settings(){ //register the plugins settings
-  register_setting('lwmwptools-settings-group', 'lwmwptools_update_interval', 'intval');
+  register_setting('lwmwptools-settings-group', 'lwmwptools_update_interval', 'absint');
 }
