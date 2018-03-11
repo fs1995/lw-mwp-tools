@@ -37,10 +37,13 @@ function lw_mwp_tools_menu(){ //create the plugins menu
 
 function lw_mwp_tools_monitor(){ //generate the resource monitor page
   require 'monitor.php'; //in a separate file cause theres a bit to this page.
+  //wp_enqueue_script('lwmwptools-chartistjs', plugins_url('js/chartist.min.js', __FILE__), '', '', 'false' );
+  wp_enqueue_style('lwmwptools-chartistcss', plugins_url('css/chartist.min.css', __FILE__) );
+  wp_enqueue_style('lwmwtptools-chartistcustomcss', plugins_url('css/chartist-custom.css', __FILE__), array('lwmwptools-chartistcss') );
 }
 
 function lw_mwp_tools_info(){ //generate the resource monitor page
-  echo "<div class=\"wrap\"><h1>System Information</h1>Hostname: " . gethostname() . "<br>PHP version: " . phpversion() . "<br>Platform: " . PHP_OS . "</div>";
+  echo "<div class=\"wrap\"><h1>System Information</h1>Hostname: ", gethostname(), "<br>Server IP: ", $_SERVER['SERVER_ADDR'], "<br>PHP version: ", phpversion(), "<br>Platform: ", PHP_OS,  "</div>";
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page

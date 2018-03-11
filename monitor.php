@@ -37,7 +37,7 @@ Cores: <span id="cores"></span><br><br>
 <form method="post" action="options.php"> <!--the update interval setting, with a default of 2 seconds-->
   <?php settings_fields('lwmwptools-settings-group'); ?>
   <?php do_settings_sections('lwmwptools-settings-group'); ?>
-  Update interval (seconds): <input type="text" name="lwmwptools_update_interval" id="update_interval" value="<?php echo esc_attr(get_option('lwmwptools_update_interval', "2") ); ?>" maxlength="4" size="4" />
+  Update interval (seconds): <input type="text" name="lwmwptools_update_interval" id="update_interval" value="<?php echo esc_attr(get_option('lwmwptools_update_interval', "5") ); ?>" maxlength="4" size="3" />
   <?php submit_button("Set", '', '', false); ?>
 </form>
 
@@ -45,19 +45,7 @@ Cores: <span id="cores"></span><br><br>
 Let us know <a href="https://wordpress.org/support/plugin/lw-mwp-tools" target="_blank">here</a>.
 </div>
 
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"> <!-- for the pie charts -->
 <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-<style>/*set the pie chart colors*/
-.ct-series-a .ct-slice-pie {
-  fill: red;
-  stroke: white;
-}
-.ct-series-b .ct-slice-pie {
-  fill: green;
-  stroke: white;
-}
-</style>
 
 <script type="text/javascript">
 
@@ -107,8 +95,8 @@ function updateChart(){
 };
 
 if(document.getElementById('update_interval').value < 1){ //make sure the interval is not 0 or negative
-  var update_interval = 2;
-  document.getElementById('update_interval').value = "2";
+  var update_interval = 5;
+  document.getElementById('update_interval').value = "5";
 }else{
   var update_interval = document.getElementById('update_interval').value;
 }
