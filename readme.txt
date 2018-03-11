@@ -40,6 +40,11 @@ Let us know in the plugins support forum.
 
 == Changelog ==
 
+= 0.3.3 =
+* Chartist is now bundled with the plugin, no more relying on externally hosted scripts!
+* Can now set System Monitor update interval.
+* System Monitor now updates securely via admin-ajax.php, no more hacky XHR!
+
 = 0.3.2 =
 * Separation of main page into 2 pages: Resource Monitor and System Info. More will be coming to both these pages soon!
 

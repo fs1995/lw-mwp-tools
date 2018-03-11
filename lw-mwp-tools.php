@@ -4,7 +4,7 @@ Plugin Name: LW MWP Tools
 Plugin URI: https://github.com/fs1995/lw-mwp-tools/
 Description: Easy access to system logs and resource usage on the Liquid Web Managed WordPress Hosting Platform.
 Author: Francis Smith
-Version: 0.3.2
+Version: 0.3.3
 Author URI: https://github.com/fs1995
 License: GPL2
 */
@@ -23,6 +23,7 @@ if(!$is_lwmwp)
   exit("This plugin requires the Liquid Web Managed WordPress V2 platform."); //prevent plugin from activating if not MWPv2.
 
 add_action('admin_menu', 'lw_mwp_tools_menu'); //hook into WP menu
+add_action('wp_ajax_lwmwptools_monitorajax', 'lwmwptools_monitorajax');
 
 function lw_mwp_tools_menu(){ //create the plugins menu
   add_menu_page('LW MWP Tools', 'LW MWP Tools', 'manage_options', 'lw-mwp-tools',  'lw_mwp_tools_monitor');
@@ -37,9 +38,10 @@ function lw_mwp_tools_menu(){ //create the plugins menu
 
 function lw_mwp_tools_monitor(){ //generate the resource monitor page
   require 'monitor.php'; //in a separate file cause theres a bit to this page.
-  //wp_enqueue_script('lwmwptools-chartistjs', plugins_url('js/chartist.min.js', __FILE__), '', '', 'false' );
   wp_enqueue_style('lwmwptools-chartistcss', plugins_url('css/chartist.min.css', __FILE__) );
-  wp_enqueue_style('lwmwtptools-chartistcustomcss', plugins_url('css/chartist-custom.css', __FILE__), array('lwmwptools-chartistcss') );
+  wp_enqueue_style('lwmwtptools-monitorcss', plugins_url('css/monitor.css', __FILE__), array('lwmwptools-chartistcss') );
+  wp_enqueue_script('lwmwptools-chartistjs', plugins_url('js/chartist.min.js', __FILE__) );
+  wp_enqueue_script('lwmwptools-monitorjs', plugins_url('js/monitor.js', __FILE__), array('lwmwptools-chartistjs', 'jquery') );
 }
 
 function lw_mwp_tools_info(){ //generate the resource monitor page
@@ -63,4 +65,11 @@ function lw_mwp_tools_nginx_error(){ //generate the nginx error log page
 
 function register_lwmwptools_settings(){ //register the plugins settings
   register_setting('lwmwptools-settings-group', 'lwmwptools_update_interval', 'absint');
+}
+
+function lwmwptools_monitorajax(){
+  //global $wpdb; //provides access to db
+  //$test = intval( $_POST['test'] );
+  require 'api.php';
+  wp_die(); //terminate immediately and return response
 }

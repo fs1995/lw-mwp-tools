@@ -1,21 +1,13 @@
-<?php
+<?php defined('ABSPATH') or die('No!');
 
-if (!isset( $_GET['lw-mwp-tools']) || !isset( $_GET['page']) ) { //protect access to this file
-    header('HTTP/1.0 401 Unauthorized');
-    exit;
-}else if( $_GET['lw-mwp-tools'] !== gethostname() . get_current_user() ){ //so the GET parameter is set, now to check what it's set to... not super secure, but this isint terribly sensitive info we are protecting...
-  header('HTTP/1.0 401 Unauthorized');
-  exit;
-}
+//header('Cache-Control: no-cache'); //TODO: test this with varnish.
 
-header('Cache-Control: no-cache'); //TODO: test this with varnish.
-
-switch($_GET['page']){
-  case "monitor":
+switch($_POST['action']){ //get the WP ajax action to call the appropriate function
+  case "lwmwptools_monitorajax":
     resource_monitor();
     break;
   default:
-    header("HTTP/1.0 404 Not Found"); //invalid page
+    header("HTTP/1.0 404 Not Found"); //invalid action
     break;
 }
 
@@ -89,7 +81,7 @@ function resource_monitor(){
 
   $monitor = array('ram_total' => $ram_total, 'ram_used' => $ram_used, 'ram_avail' => $ram_avail, /*'ram_free' => $meminfo_memfree, 'ram_buffers' => $meminfo_buffers, 'ram_cached' => $meminfo_cached,*/ 'swap_total' => $meminfo_swaptotal, 'swap_used' => $swap_used, 'swap_free' => $meminfo_swapfree, 'disk_total' => $disk_total, 'disk_used' => $disk_used, 'disk_free' => $disk_free, 'load_1' => $load_1, 'load_5' => $load_5, 'load_15' => $load_15, 'cores' => $cores );
 
-  echo json_encode($monitor); //the output, to be processed by monitor.php
+  echo json_encode($monitor); //the output
 }
 
 ?>
