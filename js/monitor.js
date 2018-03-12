@@ -1,18 +1,15 @@
 function updateMonitor(){
-  jQuery.post(
+  jQuery.post( //securely getting all the system monitor info via the WP api
     ajaxurl, //ajaxurl reqs WP 2.8+
     {
       'action': 'lwmwptools_monitorajax'
     },
     function(response) {
-      var myjson = JSON.parse(response); //turning that json into an array
+      var myjson = JSON.parse(response); //turning the json response into an array
       document.getElementById("ram_total").innerHTML = myjson['ram_total']; //and updating the page
       document.getElementById("ram_used").innerHTML = myjson['ram_used'];
       document.getElementById("ram_avail").innerHTML = myjson['ram_avail'];
-      //document.getElementById("ram_free").innerHTML = myjson['ram_free'];
-      //document.getElementById("ram_buffers").innerHTML = myjson['ram_buffers'];
-      //document.getElementById("ram_cached").innerHTML = myjson['ram_cached'];
-      document.getElementById("ram_pct").innerHTML = ((myjson['ram_used'] / myjson['ram_total']) * 100).toFixed(1);
+      document.getElementById("ram_pct").innerHTML = ((myjson['ram_used'] / myjson['ram_total']) * 100).toFixed(1); //calculate percent to 1 decimal place
 
       document.getElementById("swap_total").innerHTML = myjson['swap_total'];
       document.getElementById("swap_used").innerHTML = myjson['swap_used'];
