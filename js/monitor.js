@@ -29,9 +29,29 @@ function updateMonitor(){
       chart_ram.update({ series: [myjson['ram_used'], myjson['ram_avail']], labels: [" ", " "] }); //and updating the charts
       chart_swap.update({ series: [myjson['swap_used'], myjson['swap_free']], labels: [" ", " "] });
       chart_disk.update({ series: [myjson['disk_used'], myjson['disk_free']], labels: [" ", " "] });
+
+      lineRam.append(new Date().getTime(), (myjson['ram_used'] / myjson['ram_total']));
+      lineSwap.append(new Date().getTime(), (myjson['swap_used'] / myjson['swap_total']));
     }
   );
 }
+
+
+
+
+var smoothie = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:120});
+smoothie.streamTo(document.getElementById("chart_ramswaphistory"), 0);
+
+var lineRam = new TimeSeries();
+var lineSwap = new TimeSeries();
+
+smoothie.addTimeSeries(lineRam,
+  {strokeStyle:'rgba(171, 24, 82)', lineWidth:1});
+smoothie.addTimeSeries(lineSwap,
+  {strokeStyle:'rgba(73, 168, 53)', lineWidth:1});
+
+
+
 
 if(document.getElementById('update_interval').value < 1){ //make sure the interval is not 0 or negative
   var update_interval = 5;
@@ -46,15 +66,15 @@ setInterval(updateMonitor, update_interval*1000); //then refresh data every upda
 chart_ram = new Chartist.Pie('#chart_ram', { //create the ram chart
   series: [0],
 }, {
-  width:150,
-  height: 150
+  width:100,
+  height: 100
 });
 
 chart_swap = new Chartist.Pie('#chart_swap', {
   series: [0],
 }, {
-  width:150,
-  height:150
+  width:100,
+  height:100
 });
 
 chart_disk = new Chartist.Pie('#chart_disk', {
