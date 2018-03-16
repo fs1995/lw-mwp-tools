@@ -9,6 +9,22 @@ Cores: <span id="cores"></span><br><br>
 <table border="1" style="text-align:left; border: 1px solid black; border-collapse: collapse;">
   <tr>
     <td colspan="2" style="padding: 5px;">
+      <h3 style="margin-top: 1px;">CPU History</h3>
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+      CPU #:<span id="cpu_stuff"></span>
+    </td>
+    <td>
+    </td>
+  </tr>
+</table><br>
+
+<table border="1" style="text-align:left; border: 1px solid black; border-collapse: collapse;">
+  <tr>
+    <td colspan="2" style="padding: 5px;">
       <h3 style="margin-top: 1px;">Memory and Swap History</h3>
       <img src="<?php echo plugins_url('images/pct.png', __FILE__); ?>" height="75px" width="36px"><img src="<?php echo plugins_url('images/pixel.png', __FILE__); ?>"><canvas id="chart_ramswaphistory" width="500" height="75"></canvas><br>
       <img src="<?php echo plugins_url('images/pixel.png', __FILE__); ?>" width="8px"><img src="<?php echo plugins_url('images/sec.png', __FILE__); ?>"><br>

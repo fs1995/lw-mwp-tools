@@ -37,8 +37,7 @@ function updateMonitor(){
 }
 
 
-
-
+//##### CREATE THE MEMORY GRAPH #####
 var smoothie = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:120});
 smoothie.streamTo(document.getElementById("chart_ramswaphistory"), 0);
 
@@ -49,8 +48,7 @@ smoothie.addTimeSeries(lineRam,
   {strokeStyle:'rgba(171, 24, 82)', lineWidth:1});
 smoothie.addTimeSeries(lineSwap,
   {strokeStyle:'rgba(73, 168, 53)', lineWidth:1});
-
-
+//###################################
 
 
 if(document.getElementById('update_interval').value < 1){ //make sure the interval is not 0 or negative
@@ -63,6 +61,7 @@ if(document.getElementById('update_interval').value < 1){ //make sure the interv
 setTimeout(updateMonitor, 0); //let other stuff finish loading before showing initial data
 setInterval(updateMonitor, update_interval*1000); //then refresh data every update_interval seconds (default of 5 seconds will use about 500 KB bandwidth per hour)
 
+//##### CREATE THE PIE CHARTS #####
 chart_ram = new Chartist.Pie('#chart_ram', { //create the ram chart
   series: [0],
 }, {
@@ -83,3 +82,4 @@ chart_disk = new Chartist.Pie('#chart_disk', {
   width:150,
   height:150
 });
+//#################################
