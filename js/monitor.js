@@ -38,7 +38,7 @@ function updateMonitor(){
 
 
 //##### CREATE THE MEMORY GRAPH #####
-var smoothie = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:120});
+var smoothie = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:100});
 smoothie.streamTo(document.getElementById("chart_ramswaphistory"), 0);
 
 var lineRam = new TimeSeries();
@@ -79,7 +79,7 @@ chart_swap = new Chartist.Pie('#chart_swap', {
 chart_disk = new Chartist.Pie('#chart_disk', {
   series: [0],
 }, {
-  width:150,
-  height:150
+  width:100,
+  height:100
 });
 //#################################
