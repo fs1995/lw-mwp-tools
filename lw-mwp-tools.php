@@ -41,7 +41,7 @@ function lw_mwp_tools_monitor(){ //generate the resource monitor page
   wp_enqueue_style('lwmwptools-chartistcss', plugins_url('css/chartist.min.css', __FILE__) );
   wp_enqueue_style('lwmwtptools-monitorcss', plugins_url('css/monitor.css', __FILE__), array('lwmwptools-chartistcss') );
   wp_enqueue_script('lwmwptools-chartistjs', plugins_url('js/chartist.min.js', __FILE__) );
-  wp_enqueue_script('lwmwptools-smoothiejs', plugins_url('js/smoothie.js', __FILE__) );
+  wp_enqueue_script('lwmwptools-smoothiejs', plugins_url('js/smoothie.min.js', __FILE__) );
   wp_enqueue_script('lwmwptools-monitorjs', plugins_url('js/monitor.js', __FILE__), array('lwmwptools-chartistjs', 'jquery') );
 }
 
