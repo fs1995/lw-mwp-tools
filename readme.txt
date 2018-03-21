@@ -23,6 +23,10 @@ This is an unofficial plugin and is not affiliated with Liquid Web. For any bug 
 
 == Changelog ==
 
+= 0.3.4 =
+* View CPU usage
+* Added memory and CPU use graphs using Smoothie Charts
+
 = 0.3.3 =
 * Chartist is now bundled with the plugin, no more relying on externally hosted scripts!
 * Can now set System Monitor update interval.

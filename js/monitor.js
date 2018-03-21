@@ -1,3 +1,19 @@
+var cpuTotalArray = ['0', '0'];
+var cpuIdleArray = ['0', '0'];
+var cpuUsedArray = ['0', '0'];
+
+function CPUdifference(cpuTotal, cpuIdle, cpuUsed){
+  cpuTotalArray.unshift(cpuTotal);
+  cpuIdleArray.unshift(cpuIdle);
+  cpuUsedArray.unshift(cpuUsed);
+  console.log("total: " + cpuTotal);
+  console.log("idle: " + cpuIdle);
+  console.log("used: " + cpuUsed);
+  console.log("total diff: " + (cpuTotalArray[0] - cpuTotalArray[1]) );
+  console.log("idle diff: " + (cpuIdleArray[0] - cpuIdleArray[1]) );
+  console.log("used diff: " + (cpuUsedArray[0] - cpuUsedArray[1]) );
+}
+
 function updateMonitor(){
   jQuery.post( //securely getting all the system monitor info via the WP api
     ajaxurl, //ajaxurl reqs WP 2.8+
@@ -32,6 +48,8 @@ function updateMonitor(){
 
       lineRam.append(new Date().getTime(), (myjson['ram_used'] / myjson['ram_total']));
       lineSwap.append(new Date().getTime(), (myjson['swap_used'] / myjson['swap_total']));
+
+      CPUdifference(myjson['proc_stat_cpu_total'], myjson['proc_stat_cpu_idle'], myjson['proc_stat_cpu_usage']);
     }
   );
 }
