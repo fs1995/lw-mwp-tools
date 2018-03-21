@@ -10,11 +10,13 @@ Cores: <span id="cores"></span><br><br>
   <tr>
     <td colspan="2" style="padding: 5px;">
       <h3 style="margin-top: 1px;">CPU History</h3>
+      <img src="<?php echo plugins_url('images/pct.png', __FILE__); ?>" height="75px" width="36px"><img src="<?php echo plugins_url('images/pixel.png', __FILE__); ?>" width="5px"><canvas id="chart_cpuhistory" width="600" height="75"></canvas><br>
+      <img src="<?php echo plugins_url('images/pixel.png', __FILE__); ?>" width="8px"><img src="<?php echo plugins_url('images/sec.png', __FILE__); ?>"><br>
     </td>
   </tr>
   <tr>
     <td width="50%">
-      Coming soon!<span id="cpu_stuff"></span>
+      CPU: <span id="cpu_pct"></span>% in use
     </td>
   </tr>
 </table><br>
@@ -23,7 +25,7 @@ Cores: <span id="cores"></span><br><br>
   <tr>
     <td colspan="2" style="padding: 5px;">
       <h3 style="margin-top: 1px;">Memory and Swap History</h3>
-      <img src="<?php echo plugins_url('images/pct.png', __FILE__); ?>" height="75px" width="36px"><img src="<?php echo plugins_url('images/pixel.png', __FILE__); ?>" width="5px"><canvas id="chart_ramswaphistory" width="600" height="75"></canvas><br>
+      <img src="<?php echo plugins_url('images/pct.png', __FILE__); ?>" height="75px" width="36px"><img src="<?php echo plugins_url('images/pixel.png', __FILE__); ?>" width="5px"><canvas id="chart_memhistory" width="600" height="75"></canvas><br>
       <img src="<?php echo plugins_url('images/pixel.png', __FILE__); ?>" width="8px"><img src="<?php echo plugins_url('images/sec.png', __FILE__); ?>"><br>
     </td>
   </tr>

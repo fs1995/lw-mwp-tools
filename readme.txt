@@ -24,21 +24,31 @@ This is an unofficial plugin and is not affiliated with Liquid Web. For any bug 
 == Changelog ==
 
 = 0.3.4 =
-* View CPU usage
-* Added memory and CPU use graphs using Smoothie Charts
+*Release Date - Mar 21, 2018*
+
+* Added CPU usage.
+* Memory and CPU use graphs, thanks to Smoothie Charts.
 
 = 0.3.3 =
+*Release Date - Mar 12, 2018*
+
 * Chartist is now bundled with the plugin, no more relying on externally hosted scripts!
 * Can now set System Monitor update interval.
 * System Monitor now updates securely via admin-ajax.php, no more hacky XHR!
 
 = 0.3.2 =
+*Release Date - Feb 18, 2018*
+
 * Separation of main page into 2 pages: Resource Monitor and System Info. More will be coming to both these pages soon!
 
 = 0.3.1 =
+*Release Date - Feb 12, 2018*
+
 * Bug fix on Resource Monitor page.
 
 = 0.3 =
+*Release Date - Feb 9, 2018*
+
 * Rewrite of the system monitor page, resource usage is now updated automatically.
 * Better looking charts, thanks to Chartist.js.
 * View PHP version and hostname.

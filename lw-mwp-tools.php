@@ -4,7 +4,7 @@ Plugin Name: LW MWP Tools
 Plugin URI: https://github.com/fs1995/lw-mwp-tools/
 Description: Easy access to system logs and resource usage on the Liquid Web Managed WordPress Hosting Platform.
 Author: Francis Smith
-Version: 0.3.3
+Version: 0.3.4
 Author URI: https://github.com/fs1995
 License: GPL2
 */
@@ -20,10 +20,10 @@ if (get_current_user()[0] !== 's')
 if (!is_numeric(get_current_user()[1]))
   $is_lwmwp = 0;
 if(!$is_lwmwp)
-  exit("This plugin requires the Liquid Web Managed WordPress V2 platform."); //prevent plugin from activating if not MWPv2.
+  exit("This plugin requires the Liquid Web Managed WordPress platform."); //prevent plugin from activating if not MWP.
 
 add_action('admin_menu', 'lw_mwp_tools_menu'); //hook into WP menu
-add_action('wp_ajax_lwmwptools_monitorajax', 'lwmwptools_monitorajax');
+add_action('wp_ajax_lwmwptools_monitorajax', 'lwmwptools_monitorajax'); //ajax request handler
 
 function lw_mwp_tools_menu(){ //create the plugins menu
   add_menu_page('LW MWP Tools', 'LW MWP Tools', 'manage_options', 'lw-mwp-tools',  'lw_mwp_tools_monitor');

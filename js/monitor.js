@@ -1,18 +1,6 @@
+//hold the cpu usage so we can use the difference to calculate a percent
 var cpuTotalArray = ['0', '0'];
-var cpuIdleArray = ['0', '0'];
 var cpuUsedArray = ['0', '0'];
-
-function CPUdifference(cpuTotal, cpuIdle, cpuUsed){
-  cpuTotalArray.unshift(cpuTotal);
-  cpuIdleArray.unshift(cpuIdle);
-  cpuUsedArray.unshift(cpuUsed);
-  console.log("total: " + cpuTotal);
-  console.log("idle: " + cpuIdle);
-  console.log("used: " + cpuUsed);
-  console.log("total diff: " + (cpuTotalArray[0] - cpuTotalArray[1]) );
-  console.log("idle diff: " + (cpuIdleArray[0] - cpuIdleArray[1]) );
-  console.log("used diff: " + (cpuUsedArray[0] - cpuUsedArray[1]) );
-}
 
 function updateMonitor(){
   jQuery.post( //securely getting all the system monitor info via the WP api
@@ -49,26 +37,18 @@ function updateMonitor(){
       lineRam.append(new Date().getTime(), (myjson['ram_used'] / myjson['ram_total']));
       lineSwap.append(new Date().getTime(), (myjson['swap_used'] / myjson['swap_total']));
 
-      CPUdifference(myjson['proc_stat_cpu_total'], myjson['proc_stat_cpu_idle'], myjson['proc_stat_cpu_usage']);
+
+      cpuTotalArray.unshift(myjson['proc_stat_cpu_total']);
+      cpuUsedArray.unshift(myjson['proc_stat_cpu_usage']);
+      var cpuTotalDiff = (cpuTotalArray[0] - cpuTotalArray[1]);
+      var cpuUsedDiff = (cpuUsedArray[0] - cpuUsedArray[1]);
+      document.getElementById("cpu_pct").innerHTML = ((cpuUsedDiff/cpuTotalDiff) * 100).toFixed(1);
+      lineCPU.append(new Date().getTime(), ((cpuUsedDiff/cpuTotalDiff) * 100).toFixed(1) );
     }
   );
 }
 
-
-//##### CREATE THE MEMORY GRAPH #####
-var smoothie = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:100});
-smoothie.streamTo(document.getElementById("chart_ramswaphistory"), 0);
-
-var lineRam = new TimeSeries();
-var lineSwap = new TimeSeries();
-
-smoothie.addTimeSeries(lineRam,
-  {strokeStyle:'rgba(171, 24, 82)', lineWidth:1});
-smoothie.addTimeSeries(lineSwap,
-  {strokeStyle:'rgba(73, 168, 53)', lineWidth:1});
-//###################################
-
-
+//##### UPDATE INTERVAL #####
 if(document.getElementById('update_interval').value < 1){ //make sure the interval is not 0 or negative
   var update_interval = 5;
   document.getElementById('update_interval').value = "5";
@@ -78,6 +58,30 @@ if(document.getElementById('update_interval').value < 1){ //make sure the interv
 
 setTimeout(updateMonitor, 0); //let other stuff finish loading before showing initial data
 setInterval(updateMonitor, update_interval*1000); //then refresh data every update_interval seconds (default of 5 seconds will use about 500 KB bandwidth per hour)
+//###########################
+
+//##### CREATE THE MEMORY GRAPH #####
+var smoothieMem = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:100});
+smoothieMem.streamTo(document.getElementById("chart_memhistory"), 0);
+
+var lineRam = new TimeSeries();
+var lineSwap = new TimeSeries();
+
+smoothieMem.addTimeSeries(lineRam,
+  {strokeStyle:'rgba(171, 24, 82)', lineWidth:1});
+smoothieMem.addTimeSeries(lineSwap,
+  {strokeStyle:'rgba(73, 168, 53)', lineWidth:1});
+//###################################
+
+//##### CREATE CPU GRAPH #####
+var smoothieCPU = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:100, minValue:0, millisPerPixel:100});
+smoothieCPU.streamTo(document.getElementById("chart_cpuhistory"));
+
+var lineCPU = new TimeSeries();
+
+smoothieCPU.addTimeSeries(lineCPU,
+  {strokeStyle:'rgba(0, 0, 0)', lineWidth:1});
+//############################
 
 //##### CREATE THE PIE CHARTS #####
 chart_ram = new Chartist.Pie('#chart_ram', { //create the ram chart
