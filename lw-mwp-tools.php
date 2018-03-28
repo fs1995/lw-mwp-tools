@@ -19,8 +19,10 @@ if (get_current_user()[0] !== 's')
   $is_lwmwp = 0;
 if (!is_numeric(get_current_user()[1]))
   $is_lwmwp = 0;
-if(!$is_lwmwp)
-  exit("This plugin requires the Liquid Web Managed WordPress platform."); //prevent plugin from activating if not MWP.
+if(!$is_lwmwp){ //If not on MWP:
+  delete_option('lwmwptools_update_interval'); //then cleanup db entry,
+  exit("This plugin requires the Liquid Web Managed WordPress platform."); //and prevent plugin from activating.
+}
 
 add_action('admin_menu', 'lw_mwp_tools_menu'); //hook into WP menu
 add_action('wp_ajax_lwmwptools_monitorajax', 'lwmwptools_monitorajax'); //ajax request handler
