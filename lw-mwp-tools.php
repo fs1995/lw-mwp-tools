@@ -48,7 +48,13 @@ function lw_mwp_tools_monitor(){ //generate the resource monitor page
 }
 
 function lw_mwp_tools_info(){ //generate the resource monitor page
-  echo "<div class=\"wrap\"><h1>System Information</h1>Hostname: ", gethostname(), "<br>Server IP: ", $_SERVER['SERVER_ADDR'], "<br>PHP version: ", phpversion(), "<br>Platform: ", PHP_OS,  "</div>";
+  $lwmwptools_uptime = floatval(file_get_contents('/proc/uptime')); //read uptime
+  $lwmwptools_uptime_secs = round(fmod($lwmwptools_uptime, 60), 0); $lwmwptools_uptime = (int)($lwmwptools_uptime / 60);
+  $lwmwptools_uptime_mins = $lwmwptools_uptime % 60; $lwmwptools_uptime = (int)($lwmwptools_uptime / 60);
+  $lwmwptools_uptime_hr = $lwmwptools_uptime % 24; $lwmwptools_uptime = (int)($lwmwptools_uptime / 24);
+  $lwmwptools_uptime_days = $lwmwptools_uptime;
+
+  echo "<div class=\"wrap\"><h1>System Information</h1>Hostname: ", gethostname(), "<br>Uptime: ", $lwmwptools_uptime_days, " days, ", $lwmwptools_uptime_hr, " hours, ", $lwmwptools_uptime_mins, " minutes, ", $lwmwptools_uptime_secs, " seconds.<br>Server IP: ", $_SERVER['SERVER_ADDR'], "<br>PHP version: ", phpversion(), "<br>Platform: ", PHP_OS,  "</div>";
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
