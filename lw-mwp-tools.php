@@ -31,6 +31,7 @@ function lw_mwp_tools_menu(){ //create the plugins menu
   add_menu_page('LW MWP Tools', 'LW MWP Tools', 'manage_options', 'lw-mwp-tools',  'lw_mwp_tools_monitor');
   add_submenu_page ('lw-mwp-tools', 'Server Resource Monitor', 'Resource Monitor', 'manage_options', 'lw-mwp-tools', 'lw_mwp_tools_monitor');
   add_submenu_page ('lw-mwp-tools', 'System Information', 'System Info', 'manage_options', 'lw-mwp-tools-info', 'lw_mwp_tools_info');
+  add_submenu_page ('lw-mwp-tools', 'Clear cache', 'Clear cache', 'manage_options', 'lw-mwp-tools-cache', 'lw_mwp_tools_cache');
   add_submenu_page ('lw-mwp-tools', 'PHP error log', 'PHP error log', 'manage_options', 'lw-mwp-tools-php', 'lw_mwp_tools_php');
   add_submenu_page ('lw-mwp-tools', 'NGINX access log', 'NGINX access log', 'manage_options', 'lw-mwp-tools-nginx-access', 'lw_mwp_tools_nginx_access');
   add_submenu_page ('lw-mwp-tools', 'NGINX error log', 'NGINX error log', 'manage_options', 'lw-mwp-tools-nginx-error', 'lw_mwp_tools_nginx_error');
@@ -55,6 +56,16 @@ function lw_mwp_tools_info(){ //generate the resource monitor page
   $lwmwptools_uptime_days = $lwmwptools_uptime;
 
   echo "<div class=\"wrap\"><h1>System Information</h1>Hostname: ", gethostname(), "<br>Uptime: ", $lwmwptools_uptime_days, " days, ", $lwmwptools_uptime_hr, " hours, ", $lwmwptools_uptime_mins, " minutes, ", $lwmwptools_uptime_secs, " seconds.<br>Server IP: ", $_SERVER['SERVER_ADDR'], "<br>PHP version: ", phpversion(), "<br>Platform: ", PHP_OS,  "</div>";
+}
+
+function lw_mwp_tools_cache(){
+  echo "<div class=\"wrap\"><h1>Clear cache</h1>If changes are not showing up, you may need to clear cache.<br>NOTE: THESE BUTTONS DO NOT ACTUALLY DO ANYTHING YET.<br><br><form method=\"post\" action=\"\">";
+
+  submit_button('Delete static file cache', 'delete', '', false);
+  echo " Delete contents of wp-content/cache/<br><br>";
+
+  submit_button('Clear opcode cache', 'delete', '', false);
+  echo " Flush PHP OpCache<br><br></form></div>";
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
