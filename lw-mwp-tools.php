@@ -59,13 +59,41 @@ function lw_mwp_tools_info(){ //generate the resource monitor page
 }
 
 function lw_mwp_tools_cache(){
-  echo "<div class=\"wrap\"><h1>Clear cache</h1>If changes are not showing up, you may need to clear cache.<br>NOTE: THESE BUTTONS DO NOT ACTUALLY DO ANYTHING YET.<br><br><form method=\"post\" action=\"\">";
+  echo "<div class=\"wrap\"><h1>Clear cache</h1>If changes are not showing up, you may need to clear cache.<br><br><form method=\"post\" action=\"\">";
 
-  submit_button('Delete static file cache', 'delete', '', false);
-  echo " Delete contents of wp-content/cache/<br><br>";
+  if(isset($_POST['lwmwptools-static'])){ //delete static cache button was clicked
+    function lwmwptools_filecache($dir){
+      if(is_dir($dir)){ //if we are given a directory...
+        $objects = scandir($dir); //list all files/dirs within it...
+        foreach ($objects as $object){
+          if ($object != "." && $object != "..") {
+            if(is_dir($dir."/".$object)){ //if we come across a directory within it...
+              lwmwptools_filecache($dir."/".$object); //will need to remove all files within that dir.
+            }else{
+              unlink($dir."/".$object); //else, delete the individual files.
+              echo "Deleted file: ". $dir."/".$object."<br>";
+            }
+          }
+        }
+        rmdir($dir); //we are done with the foreach object loop and have an empty directory, delete it.
+        echo "Removed directory: ".$dir."<br>";
+      }
+    }
 
-  submit_button('Clear opcode cache', 'delete', '', false);
-  echo " Flush PHP OpCache<br><br></form></div>";
+    lwmwptools_filecache(WP_CONTENT_DIR."/cache");
+  }
+
+  if(isset($_POST['lwmwptools-opcache'])){ //flush opcache button was clicked
+    wp_cache_flush();
+    if(opcache_reset()){ //reqs php 5.5+
+      echo "OpCache cleared!<br>";
+    }else{
+      echo "Error: opcode cache seems to be disabled.<br>";
+    }
+  }
+
+  echo "<br><input type=\"submit\" name=\"lwmwptools-static\" value=\"Delete static file cache\" /> Delete contents of wp-content/cache/<br><br>";
+  echo "<input type=\"submit\" name=\"lwmwptools-opcache\" value=\"Clear opcode cache\" /> Flush PHP OpCache<br><br></form></div>";
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
