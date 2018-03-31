@@ -94,6 +94,7 @@ function lw_mwp_tools_cache(){
 
   echo "<br><input type=\"submit\" name=\"lwmwptools-static\" value=\"Delete static file cache\" /> Delete contents of wp-content/cache/<br><br>";
   echo "<input type=\"submit\" name=\"lwmwptools-opcache\" value=\"Clear opcode cache\" /> Flush PHP OpCache<br><br></form></div>";
+  echo "Your browser could be caching too: <a href=\"https://www.liquidweb.com/kb/clearing-your-browser-cache/\" target=\"_blank\">how to clear browser cache</a>";
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page

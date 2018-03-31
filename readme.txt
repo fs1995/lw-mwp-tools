@@ -20,8 +20,13 @@ This is an unofficial plugin and is not affiliated with Liquid Web. For any bug 
 
 1. Resource use charts!
 2. PHP error log
+3. Clear cache easily.
 
 == Changelog ==
+
+= 0.3.5 =
+* Added page to easily clear cache.
+* View server uptime.
 
 = 0.3.4 =
 *Release Date - Mar 21, 2018*
