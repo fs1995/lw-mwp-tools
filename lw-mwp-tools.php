@@ -24,6 +24,22 @@ if(!$is_lwmwp){ //If not on MWP:
   exit("This plugin requires the Liquid Web Managed WordPress platform."); //and prevent plugin from activating.
 }
 
+function lwmwptools_readlog($file){
+  if(file_exists($file)){
+    if(filesize($file) > '0'){
+      if(is_readable($file)){
+        return "Reading file: ".$file."<hr>".file_get_contents($file);
+      }else{
+        return "Error: The file ".$file." is not readable. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.";
+      }
+    }else{
+      return "The file ".$file." is empty.";
+    }
+  }else{
+    return "Error: The file ".$file." does not exist. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.";
+  }
+}
+
 add_action('admin_menu', 'lw_mwp_tools_menu'); //hook into WP menu
 add_action('wp_ajax_lwmwptools_monitorajax', 'lwmwptools_monitorajax'); //ajax request handler
 
@@ -81,6 +97,7 @@ function lw_mwp_tools_cache(){
     }
 
     lwmwptools_filecache(WP_CONTENT_DIR."/cache");
+    echo "Done clearing file cache!<br>";
   }
 
   if(isset($_POST['lwmwptools-opcache'])){ //flush opcache button was clicked
@@ -98,17 +115,17 @@ function lw_mwp_tools_cache(){
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
-  $lw_mwp_tools_log = file_get_contents('/var/log/' . get_current_user() . '-php-fpm-errors.log') or exit("Unable to access PHP error log. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>."); //try to get the php error log
+  $lw_mwp_tools_log = lwmwptools_readlog('/var/log/' . get_current_user() . '-php-fpm-errors.log'); //try to get the php error log
   echo "<div class=\"wrap\"><h1>PHP Error Log viewer</h1>This page does not automatically update, you will need to refresh it. If you are troubleshooting WordPress code, have you turned on <a href=\"https://codex.wordpress.org/Debugging_in_WordPress\" target=\"_blank\">WP_DEBUG</a> in wp-config.php?</div><pre>" . $lw_mwp_tools_log . "</pre>";
 }
 
 function lw_mwp_tools_nginx_access(){ //generate the nginx access log page
-  $lw_mwp_tools_log = file_get_contents('/var/log/nginx/' . get_current_user() . '.access.log') or exit("Unable to access NGINX access log. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.");
+  $lw_mwp_tools_log = lwmwptools_readlog('/var/log/nginx/' . get_current_user() . '.access.log');
   echo "<div class=\"wrap\"><h1>NGINX access Log viewer</h1>This page does not automatically update, you will need to refresh it.</div><pre>" . $lw_mwp_tools_log . "</pre>";
 }
 
 function lw_mwp_tools_nginx_error(){ //generate the nginx error log page
-  $lw_mwp_tools_log = file_get_contents('/var/log/nginx/' . get_current_user() . '.error.log') or exit("Unable to access NGINX error log. Please report this <a href=\"https://wordpress.org/support/plugin/lw-mwp-tools\" target=\"_blank\">here</a>.");
+  $lw_mwp_tools_log = lwmwptools_readlog('/var/log/nginx/' . get_current_user() . '.error.log');
   echo "<div class=\"wrap\"><h1>NGINX Error Log viewer</h1>This page does not automatically update, you will need to refresh it.</dev><pre>" . $lw_mwp_tools_log . "</pre>";
 }
 
