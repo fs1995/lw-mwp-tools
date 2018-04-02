@@ -44,7 +44,7 @@ add_action('admin_menu', 'lw_mwp_tools_menu'); //hook into WP menu
 add_action('wp_ajax_lwmwptools_monitorajax', 'lwmwptools_monitorajax'); //ajax request handler
 
 function lw_mwp_tools_menu(){ //create the plugins menu
-  add_menu_page('LW MWP Tools', 'LW MWP Tools', 'manage_options', 'lw-mwp-tools',  'lw_mwp_tools_monitor');
+  add_menu_page('LW MWP Tools', 'LW MWP Tools', 'manage_options', 'lw-mwp-tools',  'lw_mwp_tools_monitor', 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiB2ZXJzaW9uPSIxIj48cGF0aCBmaWxsPSIjOWNhMWE2IiBkPSJNMTI4LjMgMGMtLjYgMC0xLjguOC0yLjcgMS40LTEuNiAxLjMtNSA3LjUtMTAuMyAxOS4zTDEwOCAzNmwtOC45IDE5LTguNSAxOEEzMTMzIDMxMzMgMCAwIDAgNzcgMTAyLjdMNjguNSAxMjBjLTE1LjYgMzMuMy0xNC45IDMxLTE3LjMgNDMuNmE4NC44IDg0LjggMCAwIDAgMiAzNy41IDg5IDg5IDAgMCAwIDUuMSAxMS42IDc1LjcgNzUuNyAwIDAgMCAzNSAzNC45IDg5IDg5IDAgMCAwIDExLjUgNSA4Ny4yIDg3LjIgMCAwIDAgNDcgMGM1LTEgMjAuNi05LjYgMjYuNS0xNC40IDMuMy0yLjcgOC4zLTcuOCAxMS4xLTExLjMgNS02LjEgMTIuOC0yMC42IDE0LTI1LjhhODMuNiA4My42IDAgMCAwIC4xLTQ2LjVsLTEtMy41Yy0uNi0xLjQtMi42LTYuMS00LjctMTAuNWwtOC4zLTE3LjUtOC41LTE4LTcuMi0xNS41YTY3NTMgNjc1MyAwIDAgMC0xNi0zNGMtOS40LTIwLTExLjQtMjQtMTEuNS0yNC41bC0zLjQtNy41QzEzMy42IDMuNyAxMzEuMyAwIDEyOC4zIDB6bS02LjggMTI5LjRoLjZjMS44LjMgMi40IDEuOCA0LjMgMTEuOGEzNzEzIDM3MTMgMCAwIDEgMTEgNTYuN2MuMyAyLjQgMS4xIDcuNCAxLjUgNy40LjMgMCA0LjItOCA3LjUtMTUuNyAzLjUtNyA3LTEzLjcgOC0xNC41IDEuNS0xIDUuNy0uNSAxNS4zLS41IDEzLjcgMCAxNS4yIDAgMTUuMiA0IDAgMy45LTEuNyA0LjItMTQgNC4zaC0xMi4ybC0xMCAyMS4zYy0zLjQgNy02LjIgMTIuNy04LjIgMTYuMi0yIDMuNS0zLjYgNS4yLTQgNS4yLTIgMC0zLjMtMy4xLTYtMThsLTYuNi0zNC00LjctMjQuNGMtLjItMS00LjQgNy4zLTggMTQuNy00LjUgOC4zLTkgMTcuOC05LjYgMTguNC0uNyAxLTYuNS43LTE2LjMuNy0xMSAwLTEzLS43LTEyLjktNC41IDAtMy40IDEuNy00LjIgMTIuNC00LjJoMTJsOS0xOCAxMS40LTIyYzItMy41IDMtNC44IDQuMy01eiIvPjwvc3ZnPg==');
   add_submenu_page ('lw-mwp-tools', 'Server Resource Monitor', 'Resource Monitor', 'manage_options', 'lw-mwp-tools', 'lw_mwp_tools_monitor');
   add_submenu_page ('lw-mwp-tools', 'System Information', 'System Info', 'manage_options', 'lw-mwp-tools-info', 'lw_mwp_tools_info');
   add_submenu_page ('lw-mwp-tools', 'Clear cache', 'Clear cache', 'manage_options', 'lw-mwp-tools-cache', 'lw_mwp_tools_cache');
@@ -115,18 +115,15 @@ function lw_mwp_tools_cache(){
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
-  $lw_mwp_tools_log = lwmwptools_readlog('/var/log/' . get_current_user() . '-php-fpm-errors.log'); //try to get the php error log
-  echo "<div class=\"wrap\"><h1>PHP Error Log viewer</h1>This page does not automatically update, you will need to refresh it. If you are troubleshooting WordPress code, have you turned on <a href=\"https://codex.wordpress.org/Debugging_in_WordPress\" target=\"_blank\">WP_DEBUG</a> in wp-config.php?</div><pre>" . $lw_mwp_tools_log . "</pre>";
+  echo "<div class=\"wrap\"><h1>PHP Error Log viewer</h1>This page does not automatically update, you will need to refresh it. If you are troubleshooting WordPress code, have you turned on <a href=\"https://codex.wordpress.org/Debugging_in_WordPress\" target=\"_blank\">WP_DEBUG</a> in wp-config.php?</div><pre>". lwmwptools_readlog('/var/log/'.get_current_user().'-php-fpm-errors.log') ."</pre>";
 }
 
 function lw_mwp_tools_nginx_access(){ //generate the nginx access log page
-  $lw_mwp_tools_log = lwmwptools_readlog('/var/log/nginx/' . get_current_user() . '.access.log');
-  echo "<div class=\"wrap\"><h1>NGINX access Log viewer</h1>This page does not automatically update, you will need to refresh it.</div><pre>" . $lw_mwp_tools_log . "</pre>";
+  echo "<div class=\"wrap\"><h1>NGINX access Log viewer</h1>This page does not automatically update, you will need to refresh it.</div><pre>" . lwmwptools_readlog('/var/log/nginx/'.get_current_user().'.access.log') . "</pre>";
 }
 
 function lw_mwp_tools_nginx_error(){ //generate the nginx error log page
-  $lw_mwp_tools_log = lwmwptools_readlog('/var/log/nginx/' . get_current_user() . '.error.log');
-  echo "<div class=\"wrap\"><h1>NGINX Error Log viewer</h1>This page does not automatically update, you will need to refresh it.</dev><pre>" . $lw_mwp_tools_log . "</pre>";
+  echo "<div class=\"wrap\"><h1>NGINX Error Log viewer</h1>This page does not automatically update, you will need to refresh it.</dev><pre>" . lwmwptools_readlog('/var/log/nginx/'.get_current_user().'.error.log') . "</pre>";
 }
 
 function register_lwmwptools_settings(){ //register the plugins settings

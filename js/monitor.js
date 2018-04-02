@@ -1,13 +1,9 @@
 //hold the cpu usage so we can use the difference to calculate a percent
-var cpuTotalArray = ['0', '0'];
-var cpuUsedArray = ['0', '0'];
+var cpuTotalArray = ['0'];
+var cpuUsedArray = ['0'];
 
 function updateMonitor(){
-  jQuery.post( //securely getting all the system monitor info via the WP api
-    ajaxurl, //ajaxurl reqs WP 2.8+
-    {
-      'action': 'lwmwptools_monitorajax'
-    },
+  jQuery.post(ajaxurl, {'action': 'lwmwptools_monitorajax'}, //securely getting all the system monitor info via the WP api. ajaxurl reqs WP 2.8+
     function(response) {
       var myjson = JSON.parse(response); //turning the json response into an array
       document.getElementById("ram_total").innerHTML = myjson['ram_total']; //and updating the page
@@ -30,15 +26,14 @@ function updateMonitor(){
       document.getElementById("load_15").innerHTML = myjson['load_15'];
       document.getElementById("cores").innerHTML = myjson['cores'];
 
-      chart_ram.update({ series: [myjson['ram_used'], myjson['ram_avail']], labels: [" ", " "] }); //and updating the charts
+      chart_ram.update({ series: [myjson['ram_used'], myjson['ram_avail']], labels: [" ", " "] }); //and updating the pie charts
       chart_swap.update({ series: [myjson['swap_used'], myjson['swap_free']], labels: [" ", " "] });
       chart_disk.update({ series: [myjson['disk_used'], myjson['disk_free']], labels: [" ", " "] });
 
-      lineRam.append(new Date().getTime(), (myjson['ram_used'] / myjson['ram_total']));
+      lineRam.append(new Date().getTime(), (myjson['ram_used'] / myjson['ram_total'])); //updating the memory graph
       lineSwap.append(new Date().getTime(), (myjson['swap_used'] / myjson['swap_total']));
 
-
-      cpuTotalArray.unshift(myjson['proc_stat_cpu_total']);
+      cpuTotalArray.unshift(myjson['proc_stat_cpu_total']); //calculate and update the cpu usage
       cpuUsedArray.unshift(myjson['proc_stat_cpu_usage']);
       var cpuTotalDiff = (cpuTotalArray[0] - cpuTotalArray[1]);
       var cpuUsedDiff = (cpuUsedArray[0] - cpuUsedArray[1]);
@@ -61,16 +56,14 @@ setInterval(updateMonitor, update_interval*1000); //then refresh data every upda
 //###########################
 
 //##### CREATE THE MEMORY GRAPH #####
-var smoothieMem = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:100});
+var smoothieMem = new SmoothieChart({grid:{fillStyle:'#ffffff', strokeStyle:'white', sharpLines:true}, labels:{disabled:true}, maxValue:1, minValue:0, millisPerPixel:100}); //create memory chart
 smoothieMem.streamTo(document.getElementById("chart_memhistory"), 0);
 
-var lineRam = new TimeSeries();
+var lineRam = new TimeSeries(); //create each line
 var lineSwap = new TimeSeries();
 
-smoothieMem.addTimeSeries(lineRam,
-  {strokeStyle:'rgba(171, 24, 82)', lineWidth:1});
-smoothieMem.addTimeSeries(lineSwap,
-  {strokeStyle:'rgba(73, 168, 53)', lineWidth:1});
+smoothieMem.addTimeSeries(lineRam, {strokeStyle:'rgba(171, 24, 82)', lineWidth:1}); //add each line to chart and set the line options
+smoothieMem.addTimeSeries(lineSwap, {strokeStyle:'rgba(73, 168, 53)', lineWidth:1});
 //###################################
 
 //##### CREATE CPU GRAPH #####
@@ -79,29 +72,11 @@ smoothieCPU.streamTo(document.getElementById("chart_cpuhistory"));
 
 var lineCPU = new TimeSeries();
 
-smoothieCPU.addTimeSeries(lineCPU,
-  {strokeStyle:'rgba(0, 0, 0)', lineWidth:1});
+smoothieCPU.addTimeSeries(lineCPU, {strokeStyle:'rgba(0, 0, 0)', lineWidth:1});
 //############################
 
 //##### CREATE THE PIE CHARTS #####
-chart_ram = new Chartist.Pie('#chart_ram', { //create the ram chart
-  series: [0],
-}, {
-  width:100,
-  height: 100
-});
-
-chart_swap = new Chartist.Pie('#chart_swap', {
-  series: [0],
-}, {
-  width:100,
-  height:100
-});
-
-chart_disk = new Chartist.Pie('#chart_disk', {
-  series: [0],
-}, {
-  width:100,
-  height:100
-});
+chart_ram = new Chartist.Pie('#chart_ram', {series: [0]}, {width:100, height: 100}); //create the ram chart
+chart_swap = new Chartist.Pie('#chart_swap', {series: [0]}, {width:100, height:100});
+chart_disk = new Chartist.Pie('#chart_disk', {series: [0]}, {width:100, height:100});
 //#################################

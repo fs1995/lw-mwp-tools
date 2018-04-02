@@ -25,6 +25,8 @@ This is an unofficial plugin and is not affiliated with Liquid Web. For any bug 
 == Changelog ==
 
 = 0.3.5 =
+*Release Date - Apr 2, 2018*
+
 * Added page to easily clear cache.
 * View server uptime.
 

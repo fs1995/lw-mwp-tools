@@ -1,7 +1,5 @@
 <?php defined('ABSPATH') or die('No!');
 
-//header('Cache-Control: no-cache'); //TODO: test this with varnish.
-
 switch($_POST['action']){ //get the WP ajax action to call the appropriate function
   case "lwmwptools_monitorajax":
     resource_monitor();
@@ -27,9 +25,9 @@ function resource_monitor(){
   ##### RAM/SWAP INFO #####
   $meminfo = preg_split('/\ +|[\n]/', file_get_contents("/proc/meminfo")); //get ram and swap info, some regex to split spaces and newline to store in an array
 
-  for($i=0; $i<count($meminfo); $i++){ //get ram and swap info from the above array, and convert it from kb to mb, with no decimal places:
+  for($i=0; $i<count($meminfo); $i++){ //get ram and swap info from the above array...
     if($meminfo[$i] === "MemTotal:")
-      $ram_total=round(($meminfo[$i+1])/1024, 0);
+      $ram_total=round(($meminfo[$i+1])/1024, 0); //and convert it from kb to mb, with no decimal places.
     if($meminfo[$i] === "MemFree:")
       $meminfo_memfree=round(($meminfo[$i+1])/1024, 0);
     if($meminfo[$i] === "Buffers:")
