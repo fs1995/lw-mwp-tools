@@ -115,8 +115,8 @@ function lw_mwp_tools_cache(){
 }
 
 function lw_mwp_tools_php(){ //generate the php error log page
-  echo "<div class=\"wrap\"><h1>PHP Error Log viewer</h1>This page does not automatically update, you will need to refresh it. If you are troubleshooting WordPress code, have you turned on <a href=\"https://codex.wordpress.org/Debugging_in_WordPress\" target=\"_blank\">WP_DEBUG</a> in wp-config.php?</div><pre>". lwmwptools_readlog('/var/log/'.get_current_user().'-php-fpm-errors.log') ."</pre>";
-}
+  echo "<div class=\"wrap\"><h1>PHP Error Log viewer</h1>This page does not automatically update, you will need to refresh it. If you are troubleshooting WordPress code, have you turned on <a href=\"https://codex.wordpress.org/Debugging_in_WordPress\" target=\"_blank\">WP_DEBUG</a> in wp-config.php?</div><pre>". lwmwptools_readlog(ini_get('error_log')) ."</pre>";
+} //passing the lwmwptools_readlog function the php error log location, which will return the contents of the log for this function to display
 
 function lw_mwp_tools_nginx_access(){ //generate the nginx access log page
   echo "<div class=\"wrap\"><h1>NGINX access Log viewer</h1>This page does not automatically update, you will need to refresh it.</div><pre>" . lwmwptools_readlog('/var/log/nginx/'.get_current_user().'.access.log') . "</pre>";
