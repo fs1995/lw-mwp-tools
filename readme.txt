@@ -1,7 +1,7 @@
 === LW MWP Tools ===
 Contributors: fs1995
 Donate link: https://paypal.me/fs1995
-Tags: liquidweb, liquid web, server info
+Tags: liquidweb, liquid web, server info, monitor, debug
 Requires at least: 3.4
 Tested up to: 4.9.4
 Stable tag: trunk
@@ -25,7 +25,10 @@ This is an unofficial plugin and is not affiliated with Liquid Web. For any bug 
 == Changelog ==
 
 = 0.3.6 =
-* Don't hardcode PHP error log location
+*Release Date - Apr 6, 2018*
+
+* Don't hardcode PHP error log location.
+* View phpinfo().
 
 = 0.3.5 =
 *Release Date - Apr 2, 2018*

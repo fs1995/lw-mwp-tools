@@ -4,7 +4,7 @@ Plugin Name: LW MWP Tools
 Plugin URI: https://github.com/fs1995/lw-mwp-tools/
 Description: Easy access to system logs and resource usage on the Liquid Web Managed WordPress Hosting Platform.
 Author: Francis Smith
-Version: 0.3.5
+Version: 0.3.6
 Author URI: https://github.com/fs1995
 License: GPL2
 */
@@ -65,13 +65,17 @@ function lw_mwp_tools_monitor(){ //generate the resource monitor page
 }
 
 function lw_mwp_tools_info(){ //generate the resource monitor page
+  if(isset($_POST['servermonitor-phpinfo'])){
+    echo phpinfo();
+    exit;
+  }
   $lwmwptools_uptime = floatval(file_get_contents('/proc/uptime')); //read uptime
   $lwmwptools_uptime_secs = round(fmod($lwmwptools_uptime, 60), 0); $lwmwptools_uptime = (int)($lwmwptools_uptime / 60);
   $lwmwptools_uptime_mins = $lwmwptools_uptime % 60; $lwmwptools_uptime = (int)($lwmwptools_uptime / 60);
   $lwmwptools_uptime_hr = $lwmwptools_uptime % 24; $lwmwptools_uptime = (int)($lwmwptools_uptime / 24);
   $lwmwptools_uptime_days = $lwmwptools_uptime;
 
-  echo "<div class=\"wrap\"><h1>System Information</h1>Hostname: ", gethostname(), "<br>Uptime: ", $lwmwptools_uptime_days, " days, ", $lwmwptools_uptime_hr, " hours, ", $lwmwptools_uptime_mins, " minutes, ", $lwmwptools_uptime_secs, " seconds.<br>Server IP: ", $_SERVER['SERVER_ADDR'], "<br>PHP version: ", phpversion(), "<br>Platform: ", PHP_OS,  "</div>";
+  echo "<div class=\"wrap\"><h1>System Information</h1>Hostname: ", gethostname(), "<br>Uptime: ", $lwmwptools_uptime_days, " days, ", $lwmwptools_uptime_hr, " hours, ", $lwmwptools_uptime_mins, " minutes, ", $lwmwptools_uptime_secs, " seconds.<br>Server IP: ", $_SERVER['SERVER_ADDR'], "<br>PHP version: ", phpversion(), "<br>Platform: ", PHP_OS, "<br><br></div><form method=\"post\" action=\"\"><input type=\"submit\" name=\"servermonitor-phpinfo\" value=\"View phpinfo()\" /></form>";
 }
 
 function lw_mwp_tools_cache(){
