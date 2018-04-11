@@ -12,16 +12,11 @@ License: GPL2
 defined('ABSPATH') or die('No!');
 
 //check if we are on MWPv2 platform. this is not a thorough check, just seeing if the user php is running as begins with 's' then a number.
-$is_lwmwp = 1;
-if (PHP_OS !== "Linux")
-  $is_lwmwp = 0;
-if (get_current_user()[0] !== 's')
-  $is_lwmwp = 0;
-if (!is_numeric(get_current_user()[1]))
-  $is_lwmwp = 0;
-if(!$is_lwmwp){ //If not on MWP:
-  delete_option('lwmwptools_update_interval'); //then cleanup db entry,
-  exit("This plugin requires the Liquid Web Managed WordPress platform."); //and prevent plugin from activating.
+if(PHP_OS !== "Linux" || !preg_match('/^s[0-9]+/', get_current_user()) ){ //then not on MWPv2,
+  if(get_current_user() !== 'root'){ //but exclude deactivating if run as root.
+    delete_option('lwmwptools_update_interval'); //cleanup db entry,
+    exit("This plugin requires the Liquid Web Managed WordPress platform."); //and prevent plugin from activating.
+  }
 }
 
 function lwmwptools_readlog($file){
