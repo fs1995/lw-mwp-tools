@@ -15,7 +15,7 @@ defined('ABSPATH') or die('No!');
 if(PHP_OS !== "Linux" || !preg_match('/^s[0-9]+/', get_current_user()) ){ //then not on MWPv2,
   if(get_current_user() !== 'root'){ //but exclude deactivating if run as root.
     delete_option('lwmwptools_update_interval'); //cleanup db entry,
-    exit("This plugin requires the Liquid Web Managed WordPress platform."); //and prevent plugin from activating.
+    exit("LW MWP Tools requires the Liquid Web Managed WordPress V2 platform. This plugin does not support the V3 or Managed WooCommerce platforms, as resource usage is irrelevant (load is distributed across multiple servers) and error/access logs are not accessible by the PHP user here. You could also be receiving this error if you have migrated your site off the platform. In that case, you can use this plugin instead: <a href=\"https://wordpress.org/plugins/servermonitor/\" target=\"_blank\">ServerMonitor</a> "); //and prevent plugin from activating nicely.
   }
 }
 
