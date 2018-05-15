@@ -4,7 +4,7 @@ Plugin Name: LW MWP Tools
 Plugin URI: https://github.com/fs1995/lw-mwp-tools/
 Description: Easy access to system logs and resource usage on the Liquid Web Managed WordPress Hosting Platform.
 Author: Francis Smith
-Version: 0.3.6
+Version: 0.3.6.1
 Author URI: https://github.com/fs1995
 License: GPL2
 */
@@ -15,7 +15,7 @@ defined('ABSPATH') or die('No!');
 if(PHP_OS !== "Linux" || !preg_match('/^s[0-9]+/', get_current_user()) ){ //then not on MWPv2,
   if(get_current_user() !== 'root'){ //but exclude deactivating if run as root.
     delete_option('lwmwptools_update_interval'); //cleanup db entry,
-    exit("LW MWP Tools requires the Liquid Web Managed WordPress V2 platform. This plugin does not support the V3 or Managed WooCommerce platforms, as resource usage is irrelevant (load is distributed across multiple servers) and error/access logs are not accessible by the PHP user here. You could also be receiving this error if you have migrated your site off the platform. In that case, you can use this plugin instead: <a href=\"https://wordpress.org/plugins/servermonitor/\" target=\"_blank\">ServerMonitor</a> "); //and prevent plugin from activating nicely.
+    exit("LW MWP Tools requires the Liquid Web Managed WordPress V2 platform. This plugin does not support the V3 or Managed WooCommerce platforms, as resource usage is irrelevant (load is distributed across multiple servers) and error/access logs are not accessible by the PHP user. You could also be receiving this error if you have migrated your site off the platform, in that case you can use this plugin instead: <a href=\"https://wordpress.org/plugins/servermonitor/\" target=\"_blank\">ServerMonitor</a> "); //and prevent plugin from activating nicely.
   }
 }
 
@@ -130,8 +130,6 @@ function register_lwmwptools_settings(){ //register the plugins settings
 }
 
 function lwmwptools_monitorajax(){
-  //global $wpdb; //provides access to db
-  //$test = intval( $_POST['test'] );
   require 'api.php';
   wp_die(); //terminate immediately and return response
 }
